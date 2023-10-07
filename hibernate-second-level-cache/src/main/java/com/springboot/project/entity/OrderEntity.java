@@ -3,8 +3,6 @@ package com.springboot.project.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
-
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,8 +16,7 @@ import java.util.UUID;
 public class OrderEntity {
 
     @Id
-    @GeneratedValue
-    @Type(type="uuid-char")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String orderName;

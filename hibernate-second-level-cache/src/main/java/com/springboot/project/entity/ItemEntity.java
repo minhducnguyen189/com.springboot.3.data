@@ -9,13 +9,16 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "items")
+@Table(name = "items", indexes = {
+        @Index(name = "uniqueItemNameIndex", columnList = "itemName", unique = true),
+})
 public class ItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(unique = true)
     private String itemName;
 
     private Long quantity;

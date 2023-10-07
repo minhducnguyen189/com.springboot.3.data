@@ -31,6 +31,12 @@
             <version>3.1.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>5.3.32.Final</version>
+        </dependency>
+
         <!-- postgresql driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
