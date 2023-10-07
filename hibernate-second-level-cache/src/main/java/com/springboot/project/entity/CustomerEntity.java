@@ -18,6 +18,7 @@ import java.util.UUID;
         @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
         @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
 })
+@Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
 public class CustomerEntity {
 
@@ -34,6 +35,7 @@ public class CustomerEntity {
     private Gender gender;
     private Date dob;
 
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderEntity> orders = new ArrayList<>();
 

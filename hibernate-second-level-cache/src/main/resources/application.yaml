@@ -14,3 +14,8 @@ spring:
     properties:
       hibernate:
         generate_statistics: true
+  hibernate:
+    cache:
+      use_second_level_cache: true
+      region:
+        factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
