@@ -19,7 +19,7 @@ import java.util.UUID;
         @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
 })
 @Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CustomerEntity {
 
     @Id
@@ -35,7 +35,7 @@ public class CustomerEntity {
     private Gender gender;
     private Date dob;
 
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderEntity> orders = new ArrayList<>();
 
