@@ -20,6 +20,11 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
+  - name: order
+    description: Everything about your Order
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
 paths:
   /v1/customers:
     post:
@@ -45,10 +50,36 @@ paths:
         '405':
           description: Invalid input
   /v1/customers/{customerId}:
+    get:
+      tags:
+        - customer
+      summary: get an existing customer
+      description: get an existing customer by Id
+      operationId: getCustomerDetail
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
     put:
       tags:
         - customer
-      summary: Update an existing cust  omer
+      summary: Update an existing customer
       description: Update an existing customer by Id
       operationId: updateCustomers
       parameters:
@@ -78,6 +109,65 @@ paths:
           description: Pet not found
         '405':
           description: Validation exception
+  /v1/customers/{customerId}/orders:
+    post:
+      tags:
+        - order
+      summary: Add an order to database
+      description: Add an order to database
+      operationId: addOrder
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Create an Order to database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '405':
+          description: Invalid input
+  /v1/customers/{customerId}/orders/{orderId}:
+    get:
+      tags:
+        - order
+      summary: Get an order from database
+      description: Get an order from database
+      operationId: getOrderDetail
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '405':
+          description: Invalid input
 components:
   schemas:
     CustomerResponse:
@@ -134,12 +224,9 @@ components:
     OrderRequest:
       type: object
       required:
-        - customerId
+        - orderName
         - orderStatus
       properties:
-        customerId:
-          type: string
-          format: uuid
         orderName:
           type: string
         orderStatus:
@@ -148,18 +235,18 @@ components:
             - CREATED
             - SHIPPING
             - FINISHED
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemRequest'
 
     ItemRequest:
       type: object
       required:
-        - orderId
         - itemName
         - quantity
         - price
       properties:
-        orderId:
-          type: string
-          format: uuid
         itemName:
           type: string
         quantity:

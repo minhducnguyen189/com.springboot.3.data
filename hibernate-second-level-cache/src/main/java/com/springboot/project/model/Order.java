@@ -14,7 +14,6 @@ import java.util.UUID;
 public class Order {
 
     private UUID id;
-    private UUID customerId;
     private String orderName;
     private OrderStatus orderStatus;
     private List<Item> items;

@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerController implements CustomerApi {
@@ -24,7 +26,14 @@ public class CustomerController implements CustomerApi {
         Customer customer = AutoCustomerMapper.MAPPER.mapToCustomerFromRequest(customerRequest);
         customer = this.customerService.createCustomer(customer);
         CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
+        return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<CustomerResponse> getCustomerDetail(UUID customerId) {
+        Customer customer = this.customerService.getCustomer(customerId);
+        CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
+
     }
 
 }

@@ -31,18 +31,30 @@ public class OrderService {
         if (CollectionUtils.isEmpty(order.getItems())) {
             throw new RuntimeException("Can not create Order without any Item!");
         }
-        this.checkCustomerExist(customerId);
+        CustomerEntity customerEntity = this.getCustomer(customerId);
         OrderEntity orderEntity = AutoOrderMapper.MAPPER.mapToEntity(order);
         List<ItemEntity> itemEntities = this.mapToItemEntities(order.getItems(), orderEntity);
+        orderEntity.setCustomer(customerEntity);
         orderEntity.setItems(itemEntities);
         orderEntity = this.orderRepository.save(orderEntity);
         return AutoOrderMapper.MAPPER.mapToOrderFromEntity(orderEntity);
     }
 
-    private void checkCustomerExist(UUID customerId) {
+    public Order getOrderDetail(UUID customerId, UUID orderId) {
+        Optional<OrderEntity> orderEntityOpt = this.orderRepository.findById(orderId);
+        if (orderEntityOpt.isPresent()) {
+            OrderEntity orderEntity = orderEntityOpt.get();
+            if(orderEntity.getCustomer().getId().equals(customerId)) {
+                return AutoOrderMapper.MAPPER.mapToOrderFromEntity(orderEntity);
+            }
+        }
+        throw new RuntimeException("customerId or orderId is not correct or relative!");
+    }
+
+    private CustomerEntity getCustomer(UUID customerId) {
         Optional<CustomerEntity> customerEntity = this.customerRepository.findById(customerId);
         if (customerEntity.isPresent()) {
-            return;
+            return customerEntity.get();
         }
         throw new RuntimeException("Customer Not Found!");
     }
