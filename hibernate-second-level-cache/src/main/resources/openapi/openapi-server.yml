@@ -49,13 +49,13 @@ paths:
                 $ref: '#/components/schemas/CustomerResponse'
         '405':
           description: Invalid input
-  /v1/customers/{customerId}:
+  /v1/customers/{customerId}/info:
     get:
       tags:
         - customer
-      summary: get an existing customer
-      description: get an existing customer by Id
-      operationId: getCustomerDetail
+      summary: get an existing customer info
+      description: get an existing customer info by Id
+      operationId: getCustomerInfo
       parameters:
         - name: customerId
           in: path

@@ -29,7 +29,7 @@ public class CustomerController implements CustomerApi {
         return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<CustomerResponse> getCustomerDetail(UUID customerId) {
+    public ResponseEntity<CustomerResponse> getCustomerInfo(UUID customerId) {
         Customer customer = this.customerService.getCustomer(customerId);
         CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
