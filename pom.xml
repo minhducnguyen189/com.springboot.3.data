@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>hibernate-second-level-cache</module>
+        <module>jpa-entity-lifecycle-events</module>
     </modules>
 
     <properties>
