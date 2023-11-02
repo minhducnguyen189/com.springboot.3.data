@@ -11,6 +11,7 @@
     <modules>
         <module>hibernate-second-level-cache</module>
         <module>jpa-entity-lifecycle-events</module>
+        <module>jpa-indexes</module>
     </modules>
 
     <properties>
