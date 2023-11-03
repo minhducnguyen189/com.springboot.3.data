@@ -29,11 +29,19 @@ public class CustomerController implements CustomerApi {
         return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
     }
 
+    @Override
     public ResponseEntity<CustomerResponse> getCustomerInfo(UUID customerId) {
         Customer customer = this.customerService.getCustomer(customerId);
         CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
 
+    }
+
+    @Override
+    public ResponseEntity<CustomerResponse> getCustomerInfoByEmail(String email) {
+        Customer customer = this.customerService.findCustomerByEmail(email);
+        CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
+        return new ResponseEntity<>(customerResponse, HttpStatus.OK);
     }
 
 }

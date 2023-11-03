@@ -11,18 +11,3 @@ spring:
     generate-ddl: true
     show-sql: true
     open-in-view: true
-    properties:
-      jakarta:
-        persistence:
-          sharedCache:
-            mode: ALL
-      hibernate:
-        generate_statistics: true
-        cache:
-          use_second_level_cache: true
-          use_query_cache: true
-          region:
-            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
-        jakarta:
-          cache:
-            missing_cache_strategy: create

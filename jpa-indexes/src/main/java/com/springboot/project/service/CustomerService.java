@@ -47,4 +47,12 @@ public class CustomerService {
         this.customerRepository.deleteById(customerId);
     }
 
+    public Customer findCustomerByEmail(String email) {
+        Optional<CustomerEntity> customerEntity = this.customerRepository.findCustomerByEmail(email);
+        if (customerEntity.isPresent()) {
+            return AutoCustomerMapper.MAPPER.mapToCustomer(customerEntity.get());
+        }
+        throw new RuntimeException("Customer Not Found! with email: " + email);
+    }
+
 }

@@ -27,6 +27,31 @@ tags:
       url: http://swagger.io
 paths:
   /v1/customers:
+    get:
+      tags:
+        - customer
+      summary: get an existing customer info
+      description: get an existing customer info by Email
+      operationId: getCustomerInfoByEmail
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
     post:
       tags:
         - customer
