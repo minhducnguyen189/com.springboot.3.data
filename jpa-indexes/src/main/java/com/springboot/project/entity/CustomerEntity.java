@@ -34,10 +34,8 @@ public class CustomerEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String fullName;
-    @Column(unique = true)
     private String email;
     private String address;
-    @Column(unique = true)
     private String phone;
     @Enumerated(EnumType.STRING)
     private Gender gender;
