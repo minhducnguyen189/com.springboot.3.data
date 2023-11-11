@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +30,11 @@ public class CustomerService {
             return AutoCustomerMapper.MAPPER.mapToCustomer(customerEntity.get());
         }
         throw new RuntimeException("Customer Not Found!");
+    }
+
+    public List<Customer> searchCustomer(String keyword) {
+        List<CustomerEntity> foundCustomers = this.customerRepository.searchCustomerByKeyword(keyword);
+        return AutoCustomerMapper.MAPPER.mapToCustomers(foundCustomers);
     }
 
     public void updateCustomer(UUID customerId, Customer customer) {

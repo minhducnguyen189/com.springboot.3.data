@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -43,4 +44,11 @@ public class CustomerController implements CustomerApi {
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
     }
 
-}
+    @Override
+    public ResponseEntity<List<CustomerResponse>> searchCustomers(String keyword) {
+        List<Customer> customers = this.customerService.searchCustomer(keyword);
+        List<CustomerResponse> customerResponses = AutoCustomerMapper.MAPPER.mapToCustomerResponses(customers);
+        return new ResponseEntity<>(customerResponses, HttpStatus.OK);
+    }
+
+    }

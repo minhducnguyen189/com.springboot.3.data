@@ -8,6 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface AutoCustomerMapper {
 
@@ -22,6 +24,12 @@ public interface AutoCustomerMapper {
     CustomerResponse mapToCustomerResponse(Customer customer);
 
     void updateCustomerEntity(@MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
+
+    List<CustomerEntity> mapToCustomerEntities(List<Customer> customers);
+
+    List<Customer> mapToCustomers(List<CustomerEntity> customerEntities);
+
+    List<CustomerResponse> mapToCustomerResponses(List<Customer> customers);
 
 
 

@@ -134,7 +134,34 @@ paths:
           description: Pet not found
         '405':
           description: Validation exception
-
+  /v1/customers/action-search:
+    get:
+      tags:
+        - customer
+      summary: search existing customers
+      description: search existing customers info by keyword
+      operationId: searchCustomers
+      parameters:
+        - name: keyword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
 components:
   schemas:
     CustomerResponse:
@@ -145,8 +172,6 @@ components:
             id:
               type: string
               format: uuid
-
-
 
     CustomerRequest:
       type: object
