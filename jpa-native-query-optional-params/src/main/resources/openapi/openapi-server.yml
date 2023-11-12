@@ -1,0 +1,211 @@
+openapi: 3.0.3
+info:
+  title: Swagger Customer - OpenAPI 3.0
+  description: Everything about sample hibernate second level cache
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://petstore3.swagger.io/api/v1
+tags:
+  - name: customer
+    description: Everything about your Customer
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: order
+    description: Everything about your Order
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /v1/customers:
+    get:
+      tags:
+        - customer
+      summary: get an existing customer info
+      description: get an existing customer info by Email
+      operationId: getCustomerInfoByEmail
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+    post:
+      tags:
+        - customer
+      summary: Add a Customer to database
+      description: Add a Customer to database
+      operationId: addCustomer
+      requestBody:
+        description: Create a Customer to database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '405':
+          description: Invalid input
+  /v1/customers/{customerId}/info:
+    get:
+      tags:
+        - customer
+      summary: get an existing customer info
+      description: get an existing customer info by Id
+      operationId: getCustomerInfo
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - customer
+      summary: Update an existing customer
+      description: Update an existing customer by Id
+      operationId: updateCustomers
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Update an existent customer in the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerResponse'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+  /v1/customers/action-filter:
+    post:
+      tags:
+        - customer
+      summary: filter customers
+      description: filter customers
+      operationId: filterCustomers
+      requestBody:
+        description: Update an existent customer in the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerFilterRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+
+components:
+  schemas:
+    CustomerResponse:
+      allOf:
+        - $ref: '#/components/schemas/CustomerRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+
+    CustomerRequest:
+      type: object
+      required:
+        - email
+        - phone
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        gender:
+          type: string
+          enum:
+            - M
+            - F
+        dob:
+          type: string
+          format: date
+
+    CustomerFilterRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
