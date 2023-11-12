@@ -17,11 +17,11 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, UUID> 
     Optional<CustomerEntity> findCustomerByEmail(String email);
 
     @Query(
-            value = "  SELECT * FROM customers c                                                      " +
-                    "  WHERE (:full_name is null or c.full_name = :full_name)                         " +
-                    "  AND   (:email is null or c.email = :email)                                     " +
-                    "  AND   (:address is null or c.address = :address)                               " +
-                    "  AND   (:phone is null or c.phone = :phone);                                    ",
+            value = "  SELECT * FROM customers c                                                      "  +  /*1*/
+                    "  WHERE (:full_name is null or c.full_name = :full_name)                         "  +  /*2*/
+                    "  AND   (:email is null or c.email = :email)                                     "  +  /*3*/
+                    "  AND   (:address is null or c.address = :address)                               "  +  /*4*/
+                    "  AND   (:phone is null or c.phone = :phone);                                    ",    /*5*/
             nativeQuery = true
     )
     List<CustomerEntity> filterCustomers(@Param("full_name") String fullName,
