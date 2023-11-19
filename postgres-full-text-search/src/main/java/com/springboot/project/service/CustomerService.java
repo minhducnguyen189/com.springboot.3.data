@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,8 +33,14 @@ public class CustomerService {
         throw new RuntimeException("Customer Not Found!");
     }
 
-    public List<Customer> searchCustomer(String keyword) {
-        List<CustomerEntity> foundCustomers = this.customerRepository.searchCustomerByKeyword(keyword);
+    public List<Customer> searchCustomer(String keyword, Integer pageSize, Integer pageNumber) {
+        int defaultPageSize = 10;
+        int defaultPageNumber = 0;
+        if (Objects.isNull(pageSize) || Objects.isNull(pageNumber) || pageSize < 10 || pageNumber < 0) {
+            pageSize = defaultPageSize;
+            pageNumber = defaultPageNumber;
+        }
+        List<CustomerEntity> foundCustomers = this.customerRepository.searchCustomerByKeyword(keyword, pageSize, pageNumber);
         return AutoCustomerMapper.MAPPER.mapToCustomers(foundCustomers);
     }
 

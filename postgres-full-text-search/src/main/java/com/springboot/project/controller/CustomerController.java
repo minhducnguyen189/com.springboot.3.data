@@ -45,8 +45,8 @@ public class CustomerController implements CustomerApi {
     }
 
     @Override
-    public ResponseEntity<List<CustomerResponse>> searchCustomers(String keyword) {
-        List<Customer> customers = this.customerService.searchCustomer(keyword);
+    public ResponseEntity<List<CustomerResponse>> searchCustomers(String keyword, Integer pageSize, Integer pageNumber) {
+        List<Customer> customers = this.customerService.searchCustomer(keyword, pageSize, pageNumber);
         List<CustomerResponse> customerResponses = AutoCustomerMapper.MAPPER.mapToCustomerResponses(customers);
         return new ResponseEntity<>(customerResponses, HttpStatus.OK);
     }
