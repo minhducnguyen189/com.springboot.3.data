@@ -3,6 +3,7 @@ package com.springboot.project.service;
 import com.springboot.project.entity.CustomerEntity;
 import com.springboot.project.mapper.AutoCustomerMapper;
 import com.springboot.project.model.Customer;
+import com.springboot.project.model.CustomerFilterResult;
 import com.springboot.project.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CustomerService {
         throw new RuntimeException("Customer Not Found!");
     }
 
-    public List<Customer> searchCustomer(String keyword, Integer pageSize, Integer pageNumber) {
+    public CustomerFilterResult searchCustomer(String keyword, Integer pageSize, Integer pageNumber) {
         int defaultPageSize = 10;
         int defaultPageNumber = 0;
         if (Objects.isNull(pageSize) || Objects.isNull(pageNumber) || pageSize < 10 || pageNumber < 0) {
@@ -41,7 +42,12 @@ public class CustomerService {
             pageNumber = defaultPageNumber;
         }
         List<CustomerEntity> foundCustomers = this.customerRepository.searchCustomerByKeyword(keyword, pageSize, pageNumber);
-        return AutoCustomerMapper.MAPPER.mapToCustomers(foundCustomers);
+        List<Customer> customers = AutoCustomerMapper.MAPPER.mapToCustomers(foundCustomers);
+        CustomerFilterResult customerFilterResult = new CustomerFilterResult();
+        customerFilterResult.setFilteredCustomers(customers);
+        customerFilterResult.setFoundNumber((long) customers.size());
+        customerFilterResult.setTotal(this.customerRepository.count());
+        return customerFilterResult;
     }
 
     public void updateCustomer(UUID customerId, Customer customer) {

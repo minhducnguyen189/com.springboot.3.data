@@ -1,10 +1,12 @@
 package com.springboot.project.controller;
 
 import com.springboot.project.generated.api.CustomerApi;
+import com.springboot.project.generated.model.CustomerFilterResponse;
 import com.springboot.project.generated.model.CustomerRequest;
 import com.springboot.project.generated.model.CustomerResponse;
 import com.springboot.project.mapper.AutoCustomerMapper;
 import com.springboot.project.model.Customer;
+import com.springboot.project.model.CustomerFilterResult;
 import com.springboot.project.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +47,10 @@ public class CustomerController implements CustomerApi {
     }
 
     @Override
-    public ResponseEntity<List<CustomerResponse>> searchCustomers(String keyword, Integer pageSize, Integer pageNumber) {
-        List<Customer> customers = this.customerService.searchCustomer(keyword, pageSize, pageNumber);
-        List<CustomerResponse> customerResponses = AutoCustomerMapper.MAPPER.mapToCustomerResponses(customers);
-        return new ResponseEntity<>(customerResponses, HttpStatus.OK);
+    public ResponseEntity<CustomerFilterResponse> searchCustomers(String keyword, Integer pageSize, Integer pageNumber) {
+        CustomerFilterResult customerFilterResult = this.customerService.searchCustomer(keyword, pageSize, pageNumber);
+        CustomerFilterResponse customerFilterResponse = AutoCustomerMapper.MAPPER.mapToCustomerFilterResponse(customerFilterResult);
+        return new ResponseEntity<>(customerFilterResponse, HttpStatus.OK);
     }
 
     }

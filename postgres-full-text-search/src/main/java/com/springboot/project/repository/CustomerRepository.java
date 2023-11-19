@@ -19,9 +19,9 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, UUID> 
     @Query(
             value = "       SELECT * FROM customers c                                                                                                                                                                                  " +
                     "       WHERE to_tsvector('english', full_name || ' ' || email || ' ' || address || ' ' || regexp_replace(phone, '-', '', 'g') || ' ' || regexp_replace(CAST(dob AS TEXT), '-', '', 'g') || ' ' || gender)         " +
-                    "       @@ plainto_tsquery('english', :keyword);                                                                                                                                                                   " +
-                    "       LIMIT :pageSize);                                                                                                                                                                                          " +
-                    "       OFFSET :pageNumber);                                                                                                                                                                                       ",
+                    "       @@ plainto_tsquery('english', :keyword)                                                                                                                                                                    " +
+                    "       LIMIT :pageSize                                                                                                                                                                                            " +
+                    "       OFFSET :pageNumber                                                                                                                                                                                         ",
             nativeQuery = true
     )
     List<CustomerEntity> searchCustomerByKeyword(@Param("keyword") String keyword,

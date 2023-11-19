@@ -1,9 +1,11 @@
 package com.springboot.project.mapper;
 
 import com.springboot.project.entity.CustomerEntity;
+import com.springboot.project.generated.model.CustomerFilterResponse;
 import com.springboot.project.generated.model.CustomerRequest;
 import com.springboot.project.generated.model.CustomerResponse;
 import com.springboot.project.model.Customer;
+import com.springboot.project.model.CustomerFilterResult;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
@@ -31,6 +33,6 @@ public interface AutoCustomerMapper {
 
     List<CustomerResponse> mapToCustomerResponses(List<Customer> customers);
 
-
+    CustomerFilterResponse mapToCustomerFilterResponse(CustomerFilterResult customerFilterResult);
 
 }
