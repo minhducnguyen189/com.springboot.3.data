@@ -27,8 +27,6 @@ public interface AutoCustomerMapper {
 
     void updateCustomerEntity(@MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
 
-    List<CustomerEntity> mapToCustomerEntities(List<Customer> customers);
-
     List<Customer> mapToCustomers(List<CustomerEntity> customerEntities);
 
     List<CustomerResponse> mapToCustomerResponses(List<Customer> customers);
