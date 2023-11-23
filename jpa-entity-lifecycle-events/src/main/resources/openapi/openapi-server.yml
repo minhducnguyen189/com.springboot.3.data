@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerResponse'
+                $ref: '#/components/schemas/CustomerDetail'
         '400':
           description: Invalid ID supplied
         '404':
@@ -71,16 +71,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerResponse'
+                $ref: '#/components/schemas/CustomerDetail'
         '405':
           description: Invalid input
-  /v1/customers/{customerId}/info:
+  /v1/customers/{customerId}:
     get:
       tags:
         - customer
       summary: get an existing customer info
       description: get an existing customer info by Id
-      operationId: getCustomerInfo
+      operationId: getCustomer
       parameters:
         - name: customerId
           in: path
@@ -94,7 +94,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerResponse'
+                $ref: '#/components/schemas/CustomerDetail'
         '400':
           description: Invalid ID supplied
         '404':
@@ -106,7 +106,7 @@ paths:
         - customer
       summary: Update an existing customer
       description: Update an existing customer by Id
-      operationId: updateCustomers
+      operationId: updateCustomer
       parameters:
         - name: customerId
           in: path
@@ -119,7 +119,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CustomerResponse'
+              $ref: '#/components/schemas/CustomerDetail'
         required: true
       responses:
         '200':
@@ -127,65 +127,68 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerResponse'
+                $ref: '#/components/schemas/CustomerDetail'
         '400':
           description: Invalid ID supplied
         '404':
           description: Pet not found
         '405':
           description: Validation exception
-  /v1/customers/action-search:
-    get:
+    delete:
       tags:
         - customer
-      summary: search existing customers
-      description: search existing customers info by keyword
-      operationId: searchCustomers
+      summary: delete an existing customer
+      description: delete an existing customer by Id
+      operationId: deleteCustomer
       parameters:
-        - name: keyword
-          in: query
+        - name: customerId
+          in: path
           required: true
           schema:
             type: string
-        - name: pageSize
-          in: query
-          required: false
-          schema:
-            type: integer
-        - name: pageNumber
-          in: query
-          required: false
-          schema:
-            type: integer
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+  /v1/customers/action-filter:
+    post:
+      tags:
+        - customer
+      summary: filter customers
+      description: filter customers
+      operationId: filterCustomers
+      requestBody:
+        description: Update an existent customer in the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerFilterRequest'
+        required: true
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerFilterResponse'
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerDetail'
         '400':
           description: Invalid ID supplied
         '404':
           description: Pet not found
         '405':
           description: Validation exception
+
 components:
   schemas:
-    CustomerFilterResponse:
-      type: object
-      properties:
-        filteredCustomers:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomerResponse'
-        foundNumber:
-          type: integer
-          format: int64
-        total:
-          type: integer
-          format: int64
-    CustomerResponse:
+    CustomerDetail:
       allOf:
         - $ref: '#/components/schemas/CustomerRequest'
         - type: object
@@ -216,3 +219,15 @@ components:
         dob:
           type: string
           format: date
+
+    CustomerFilterRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
