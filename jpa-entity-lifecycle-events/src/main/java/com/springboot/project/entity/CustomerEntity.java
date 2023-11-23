@@ -32,37 +32,37 @@ public class CustomerEntity {
 
     @PrePersist
     public void logNewCustomerAttempt() {
-        log.info("Attempting to add new Customer with username: " + this.fullName);
+        log.info("@PrePersist Attempting to add new Customer with username: " + this.fullName);
     }
 
     @PostPersist
     public void logNewCustomerAdded() {
-        log.info("Added Customer '" + this.fullName + "' with ID: " + this.id);
+        log.info("@PostPersist Added Customer '" + this.fullName + "' with ID: " + this.id);
     }
 
     @PreRemove
     public void logCustomerRemovalAttempt() {
-        log.info("Attempting to delete Customer: " + this.fullName);
+        log.info("@PreRemove Attempting to delete Customer: " + this.fullName);
     }
 
     @PostRemove
     public void logCustomerRemoval() {
-        log.info("Deleted Customer: " + this.fullName);
+        log.info("@PostRemove Deleted Customer: " + this.fullName);
     }
 
     @PreUpdate
     public void logCustomerUpdateAttempt() {
-        log.info("Attempting to update Customer: " + this.fullName);
+        log.info("@PreUpdate Attempting to update Customer: " + this.fullName);
     }
 
     @PostUpdate
     public void logCustomerUpdate() {
-        log.info("Updated Customer: " + this.fullName);
+        log.info("@PostUpdate Updated Customer: " + this.fullName);
     }
 
     @PostLoad
     public void logCustomerLoad() {
-        log.info(this.fullName);
+        log.info("@PostLoad load customer: " + this.fullName);
     }
 
 }
