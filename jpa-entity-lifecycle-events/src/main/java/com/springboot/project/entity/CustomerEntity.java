@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@EntityListeners(CustomerListener.class)
 @Entity
 @Slf4j
 @Table(name = "customers", indexes = {
