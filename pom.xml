@@ -13,7 +13,7 @@
         <module>jpa-entity-lifecycle-events</module>
         <module>jpa-indexes</module>
         <module>postgres-full-text-search</module>
-        <module>jpa-native-query-optional-params</module>
+        <module>postgres-native-query-optional-params</module>
     </modules>
 
     <properties>

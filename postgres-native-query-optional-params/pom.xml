@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jpa-native-query-optional-params</artifactId>
+    <artifactId>postgres-native-query-optional-params</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

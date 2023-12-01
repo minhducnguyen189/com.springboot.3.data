@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JpaNativeQueryOptionalParamsApp {
+public class PostgresNativeQueryOptionalParamsApp {
     public static void main(String[] args) {
-        SpringApplication.run(JpaNativeQueryOptionalParamsApp.class, args);
+        SpringApplication.run(PostgresNativeQueryOptionalParamsApp.class, args);
     }
 }
