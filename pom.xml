@@ -14,6 +14,7 @@
         <module>jpa-indexes</module>
         <module>postgres-full-text-search</module>
         <module>postgres-native-query-optional-params</module>
+        <module>jpa-with-specification-query</module>
     </modules>
 
     <properties>
