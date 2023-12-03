@@ -14,8 +14,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,12 +47,15 @@ public class CustomerEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private Date dob;
+    @Transient
+    private Integer loyaltyCardPoints;
 
     @JoinColumn(name = "loyalty_card")
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private LoyaltyCardEntity loyaltyCard;
 
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderEntity> orders = new ArrayList<>();
+    private List<OrderEntity> orders;
 
 }

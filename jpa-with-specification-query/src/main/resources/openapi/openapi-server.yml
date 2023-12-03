@@ -25,11 +25,6 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
-  - name: loyaltyCard
-    description: Everything about your LoyaltyCard
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
 paths:
   /v1/customers:
     post:
@@ -176,7 +171,7 @@ paths:
   /v1/customers/{customerId}/loyaltyCard:
     post:
       tags:
-        - loyaltyCard
+        - customer
       summary: Add a loyaltyCard to database
       description: Add a loyaltyCard to database
       operationId: addloyaltyCard
@@ -203,6 +198,95 @@ paths:
                 $ref: '#/components/schemas/LoyaltyCardResponse'
         '405':
           description: Invalid input
+  /v1/customers/actions/filter:
+    get:
+      tags:
+        - customer
+      summary: filter existing customers
+      description: filter existing customers info by keyword
+      operationId: filterCustomers
+      parameters:
+        - name: fullName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: address
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: phone
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: gender
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - M
+              - F
+        - name: dobFrom
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: dobTo
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: loyaltyCardPoints
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: pageNumber
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sortOrder
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerFilterResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
 components:
   schemas:
     CustomerResponse:
@@ -308,3 +392,25 @@ components:
       properties:
         points:
           type: integer
+
+    CustomerFilterResponse:
+      type: object
+      properties:
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerFilterDetailResponse'
+        foundNumber:
+          type: integer
+          format: int64
+        totalNumber:
+          type: integer
+          format: int64
+
+    CustomerFilterDetailResponse:
+      allOf:
+        - $ref: '#/components/schemas/CustomerResponse'
+        - type: object
+          properties:
+            loyaltyCardPoints:
+              type: integer

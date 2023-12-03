@@ -131,7 +131,7 @@
                                 <interfaceOnly>true</interfaceOnly>
                                 <useBeanValidation>true</useBeanValidation>
                                 <performBeanValidation>true</performBeanValidation>
-                                <useOptional>false</useOptional>
+                                <useOptional>true</useOptional>
                                 <useSpringBoot3>true</useSpringBoot3>
                             </configOptions>
                         </configuration>
