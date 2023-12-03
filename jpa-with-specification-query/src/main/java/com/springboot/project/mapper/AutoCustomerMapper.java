@@ -1,7 +1,7 @@
 package com.springboot.project.mapper;
 
 import com.springboot.project.entity.CustomerEntity;
-import com.springboot.project.entity.projection.CustomerEntityProjection;
+import com.springboot.project.entity.projection.CustomerDtoProjection;
 import com.springboot.project.generated.model.CustomerFilterResponse;
 import com.springboot.project.generated.model.CustomerRequest;
 import com.springboot.project.generated.model.CustomerResponse;
@@ -29,7 +29,7 @@ public interface AutoCustomerMapper {
 
     void updateCustomerEntity(@MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
 
-    List<CustomerFilterDetail> mapToCustomers(List<CustomerEntityProjection> customerEntities);
+    List<CustomerFilterDetail> mapToCustomers(List<CustomerDtoProjection> customerEntities);
 
     CustomerFilterResponse mapToCustomerFilterResponse(CustomerFilterResult customerFilterResult);
 

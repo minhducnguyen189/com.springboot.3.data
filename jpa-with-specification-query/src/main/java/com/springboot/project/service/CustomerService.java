@@ -2,7 +2,7 @@ package com.springboot.project.service;
 
 import com.springboot.project.entity.CustomerEntity;
 import com.springboot.project.entity.LoyaltyCardEntity;
-import com.springboot.project.entity.projection.CustomerEntityProjection;
+import com.springboot.project.entity.projection.CustomerDtoProjection;
 import com.springboot.project.helper.SpecificationHelper;
 import com.springboot.project.mapper.AutoCustomerMapper;
 import com.springboot.project.mapper.AutoLoyaltyCardMapper;
@@ -11,6 +11,14 @@ import com.springboot.project.model.CustomerFilter;
 import com.springboot.project.model.CustomerFilterResult;
 import com.springboot.project.model.LoyaltyCard;
 import com.springboot.project.repository.CustomerRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -20,8 +28,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +41,8 @@ import java.util.UUID;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+
+    private final EntityManager entityManager;
 
     public Customer createCustomer(Customer customer) {
         CustomerEntity customerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
@@ -50,24 +62,38 @@ public class CustomerService {
         return AutoCustomerMapper.MAPPER.mapToCustomer(this.getCustomerEntity(customerId));
     }
 
-    public CustomerFilterResult filterCustomer(CustomerFilter customerFilter) {
+    public CustomerFilterResult filterCustomerWithEM(CustomerFilter customerFilter) {
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CustomerDtoProjection> query = builder.createQuery(CustomerDtoProjection.class);
+        Root<CustomerEntity> rootTable = query.from(CustomerEntity.class);
+
+        Join<CustomerEntity, LoyaltyCard> joinTable = rootTable.join("loyaltyCard", JoinType.INNER);
+        query.multiselect(
+                rootTable.get("id").alias("id"),
+                rootTable.get("fullName").alias("fullName"),
+                rootTable.get("email").alias("email"),
+                rootTable.get("address").alias("address"),
+                rootTable.get("phone").alias("phone"),
+                rootTable.get("gender").alias("gender"),
+                rootTable.get("dob").alias("dob"),
+                joinTable.get("points").alias("loyaltyCardPoints")
+        );
+
+        if (Objects.nonNull(customerFilter.getSortBy()) && Objects.nonNull(customerFilter.getSortOrder())) {
+            if(customerFilter.getSortBy().equals("DESC")) {
+                query.orderBy(builder.desc(rootTable.get(customerFilter.getSortBy())));
+            } else {
+                query.orderBy(builder.asc(rootTable.get(customerFilter.getSortBy())));
+            }
+        }
+
         CustomerEntity exampleCustomer = new CustomerEntity();
         exampleCustomer.setFullName(customerFilter.getFullName());
         exampleCustomer.setEmail(customerFilter.getEmail());
         exampleCustomer.setAddress(customerFilter.getAddress());
         exampleCustomer.setPhone(customerFilter.getPhone());
         exampleCustomer.setGender(customerFilter.getGender());
-
-        Pageable pageable;
-        if (Objects.nonNull(customerFilter.getSortBy()) && Objects.nonNull(customerFilter.getSortOrder())) {
-            pageable = PageRequest.of(
-                    customerFilter.getPageNumber(),
-                    customerFilter.getPageSize(),
-                    Sort.by(Sort.Direction.valueOf(customerFilter.getSortOrder()), customerFilter.getSortBy())
-            );
-        } else {
-            pageable = PageRequest.of(customerFilter.getPageNumber(), customerFilter.getPageSize());
-        }
 
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
                 .withIgnoreNullValues()
@@ -90,16 +116,20 @@ public class CustomerService {
                         customerFilter.getLoyaltyCardPoints()
                 ));
 
-        Page<CustomerEntityProjection> page = this.customerRepository
-                .findBy(specification, queryFunction -> queryFunction.as(CustomerEntityProjection.class).page(pageable));
+        Predicate predicate = specification.toPredicate(rootTable, query, builder);
 
-        Long foundNumber = this.customerRepository.count(specification);
-        Long totalNumber = this.customerRepository.count();
+        CriteriaQuery<CustomerDtoProjection> customerEntityProjectionCriteriaQuery =  query.where(predicate);
+        TypedQuery<CustomerDtoProjection> jpaQuery = entityManager.createQuery(customerEntityProjectionCriteriaQuery);
+        jpaQuery.setFirstResult(customerFilter.getPageNumber());
+        jpaQuery.setMaxResults(customerFilter.getPageSize());
+
+        List<CustomerDtoProjection> results = jpaQuery.getResultList();
+        long total = this.customerRepository.count();
 
         CustomerFilterResult customerFilterResult = new CustomerFilterResult();
-        customerFilterResult.setCustomers(AutoCustomerMapper.MAPPER.mapToCustomers(page.getContent()));
-        customerFilterResult.setFoundNumber(foundNumber);
-        customerFilterResult.setTotalNumber(totalNumber);
+        customerFilterResult.setCustomers(AutoCustomerMapper.MAPPER.mapToCustomers(results));
+        customerFilterResult.setFoundNumber(this.customerRepository.count(specification));
+        customerFilterResult.setTotalNumber(total);
 
         return customerFilterResult;
     }

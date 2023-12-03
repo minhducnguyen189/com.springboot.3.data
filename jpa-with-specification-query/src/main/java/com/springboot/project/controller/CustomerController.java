@@ -76,7 +76,7 @@ public class CustomerController implements CustomerApi {
         customerFilter.setPageNumber(pageNumber.orElse(0));
         customerFilter.setSortBy(sortBy.orElse(null));
         customerFilter.setSortOrder(sortOrder.orElse(null));
-        CustomerFilterResult customerFilterResult = this.customerService.filterCustomer(customerFilter);
+        CustomerFilterResult customerFilterResult = this.customerService.filterCustomerWithEM(customerFilter);
         CustomerFilterResponse customerFilterResponse = AutoCustomerMapper.MAPPER.mapToCustomerFilterResponse(customerFilterResult);
         return new ResponseEntity<>(customerFilterResponse, HttpStatus.OK);
     }
