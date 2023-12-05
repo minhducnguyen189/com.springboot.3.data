@@ -2,6 +2,7 @@ package com.springboot.project.service;
 
 import com.springboot.project.entity.CustomerEntity;
 import com.springboot.project.entity.LoyaltyCardEntity;
+import com.springboot.project.entity.OrderEntity;
 import com.springboot.project.entity.projection.CustomerDtoProjection;
 import com.springboot.project.helper.SpecificationHelper;
 import com.springboot.project.mapper.AutoCustomerMapper;
@@ -23,12 +24,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,10 +61,11 @@ public class CustomerService {
     public CustomerFilterResult filterCustomerWithEM(CustomerFilter customerFilter) {
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<CustomerDtoProjection> query = builder.createQuery(CustomerDtoProjection.class);
+        CriteriaQuery<CustomerEntity> query = builder.createQuery(CustomerEntity.class);
         Root<CustomerEntity> rootTable = query.from(CustomerEntity.class);
 
-        Join<CustomerEntity, LoyaltyCard> joinTable = rootTable.join("loyaltyCard", JoinType.INNER);
+        Join<CustomerEntity, LoyaltyCard> loyaltyCard = rootTable.join("loyaltyCard", JoinType.INNER);
+
         query.multiselect(
                 rootTable.get("id").alias("id"),
                 rootTable.get("fullName").alias("fullName"),
@@ -77,7 +74,7 @@ public class CustomerService {
                 rootTable.get("phone").alias("phone"),
                 rootTable.get("gender").alias("gender"),
                 rootTable.get("dob").alias("dob"),
-                joinTable.get("points").alias("loyaltyCardPoints")
+                loyaltyCard.get("points").alias("loyaltyCardPoints")
         );
 
         if (Objects.nonNull(customerFilter.getSortBy()) && Objects.nonNull(customerFilter.getSortOrder())) {
@@ -118,12 +115,12 @@ public class CustomerService {
 
         Predicate predicate = specification.toPredicate(rootTable, query, builder);
 
-        CriteriaQuery<CustomerDtoProjection> customerEntityProjectionCriteriaQuery =  query.where(predicate);
-        TypedQuery<CustomerDtoProjection> jpaQuery = entityManager.createQuery(customerEntityProjectionCriteriaQuery);
+        CriteriaQuery<CustomerEntity> customerEntityProjectionCriteriaQuery =  query.where(predicate);
+        TypedQuery<CustomerEntity> jpaQuery = entityManager.createQuery(customerEntityProjectionCriteriaQuery);
         jpaQuery.setFirstResult(customerFilter.getPageNumber());
         jpaQuery.setMaxResults(customerFilter.getPageSize());
 
-        List<CustomerDtoProjection> results = jpaQuery.getResultList();
+        List<CustomerEntity> results = jpaQuery.getResultList();
         long total = this.customerRepository.count();
 
         CustomerFilterResult customerFilterResult = new CustomerFilterResult();

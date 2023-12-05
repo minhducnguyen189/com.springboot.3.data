@@ -29,7 +29,7 @@ public interface AutoCustomerMapper {
 
     void updateCustomerEntity(@MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
 
-    List<CustomerFilterDetail> mapToCustomers(List<CustomerDtoProjection> customerEntities);
+    List<CustomerFilterDetail> mapToCustomers(List<CustomerEntity> customerEntities);
 
     CustomerFilterResponse mapToCustomerFilterResponse(CustomerFilterResult customerFilterResult);
 

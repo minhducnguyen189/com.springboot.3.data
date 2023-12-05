@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -19,5 +20,6 @@ public class CustomerFilterDetail {
     private Gender gender;
     private Date dob;
     private Integer loyaltyCardPoints;
+    private List<Order> orders;
 
 }
