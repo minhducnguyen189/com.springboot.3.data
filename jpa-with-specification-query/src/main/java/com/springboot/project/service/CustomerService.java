@@ -20,6 +20,7 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -64,18 +65,13 @@ public class CustomerService {
         CriteriaQuery<CustomerEntity> query = builder.createQuery(CustomerEntity.class);
         Root<CustomerEntity> rootTable = query.from(CustomerEntity.class);
 
-        Join<CustomerEntity, LoyaltyCard> loyaltyCard = rootTable.join("loyaltyCard", JoinType.INNER);
-
-        query.multiselect(
-                rootTable.get("id").alias("id"),
-                rootTable.get("fullName").alias("fullName"),
-                rootTable.get("email").alias("email"),
-                rootTable.get("address").alias("address"),
-                rootTable.get("phone").alias("phone"),
-                rootTable.get("gender").alias("gender"),
-                rootTable.get("dob").alias("dob"),
-                loyaltyCard.get("points").alias("loyaltyCardPoints")
-        );
+//        Join<CustomerEntity, OrderEntity> joinOrder = rootTable.join("orders", JoinType.INNER);
+//
+//        Subquery<UUID> subQueryIdOrder = query.subquery(UUID.class);
+//        Root<OrderEntity> rootOrder = subQueryIdOrder.from(OrderEntity.class);
+//        subQueryIdOrder.select(rootOrder.get("id"));
+//
+//        query.where(joinOrder.get("id").in(subQueryIdOrder.getSelection()));
 
         if (Objects.nonNull(customerFilter.getSortBy()) && Objects.nonNull(customerFilter.getSortOrder())) {
             if(customerFilter.getSortBy().equals("DESC")) {
