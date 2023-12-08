@@ -19,7 +19,6 @@ import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -47,7 +46,6 @@ public class CustomerEntity {
     private Gender gender;
     private Date dob;
 
-    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "loyalty_card")
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private LoyaltyCardEntity loyaltyCard;
