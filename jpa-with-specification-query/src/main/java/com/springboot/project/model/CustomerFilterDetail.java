@@ -19,7 +19,7 @@ public class CustomerFilterDetail {
     private String phone;
     private Gender gender;
     private Date dob;
-    private Integer loyaltyCardPoints;
+    private LoyaltyCard loyaltyCard;
     private List<Order> orders;
 
 }

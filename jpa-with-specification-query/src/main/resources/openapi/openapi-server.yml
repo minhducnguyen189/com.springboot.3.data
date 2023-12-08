@@ -412,8 +412,8 @@ components:
         - $ref: '#/components/schemas/CustomerResponse'
         - type: object
           properties:
-            loyaltyCardPoints:
-              type: integer
+            loyaltyCard:
+              $ref: '#/components/schemas/LoyaltyCardResponse'
             orders:
               type: array
               items:

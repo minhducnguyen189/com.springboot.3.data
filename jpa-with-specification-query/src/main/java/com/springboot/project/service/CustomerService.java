@@ -2,8 +2,6 @@ package com.springboot.project.service;
 
 import com.springboot.project.entity.CustomerEntity;
 import com.springboot.project.entity.LoyaltyCardEntity;
-import com.springboot.project.entity.OrderEntity;
-import com.springboot.project.entity.projection.CustomerDtoProjection;
 import com.springboot.project.helper.SpecificationHelper;
 import com.springboot.project.mapper.AutoCustomerMapper;
 import com.springboot.project.mapper.AutoLoyaltyCardMapper;
@@ -16,11 +14,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Subquery;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -64,14 +59,6 @@ public class CustomerService {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<CustomerEntity> query = builder.createQuery(CustomerEntity.class);
         Root<CustomerEntity> rootTable = query.from(CustomerEntity.class);
-
-//        Join<CustomerEntity, OrderEntity> joinOrder = rootTable.join("orders", JoinType.INNER);
-//
-//        Subquery<UUID> subQueryIdOrder = query.subquery(UUID.class);
-//        Root<OrderEntity> rootOrder = subQueryIdOrder.from(OrderEntity.class);
-//        subQueryIdOrder.select(rootOrder.get("id"));
-//
-//        query.where(joinOrder.get("id").in(subQueryIdOrder.getSelection()));
 
         if (Objects.nonNull(customerFilter.getSortBy()) && Objects.nonNull(customerFilter.getSortOrder())) {
             if(customerFilter.getSortBy().equals("DESC")) {
