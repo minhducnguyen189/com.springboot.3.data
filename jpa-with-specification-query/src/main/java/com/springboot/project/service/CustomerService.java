@@ -20,6 +20,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -56,16 +60,10 @@ public class CustomerService {
 
     public CustomerFilterResult filterCustomerWithEM(CustomerFilter customerFilter) {
 
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<CustomerEntity> query = builder.createQuery(CustomerEntity.class);
-        Root<CustomerEntity> rootTable = query.from(CustomerEntity.class);
-
+        Pageable pageable = PageRequest.of(customerFilter.getPageNumber(), customerFilter.getPageSize());
         if (Objects.nonNull(customerFilter.getSortBy()) && Objects.nonNull(customerFilter.getSortOrder())) {
-            if(customerFilter.getSortBy().equals("DESC")) {
-                query.orderBy(builder.desc(rootTable.get(customerFilter.getSortBy())));
-            } else {
-                query.orderBy(builder.asc(rootTable.get(customerFilter.getSortBy())));
-            }
+            pageable = PageRequest.of(customerFilter.getPageNumber(), customerFilter.getPageSize(),
+                    Sort.by(Sort.Direction.valueOf(customerFilter.getSortOrder()), customerFilter.getSortBy()));
         }
 
         CustomerEntity exampleCustomer = new CustomerEntity();
@@ -96,20 +94,11 @@ public class CustomerService {
                         customerFilter.getLoyaltyCardPoints()
                 ));
 
-        Predicate predicate = specification.toPredicate(rootTable, query, builder);
-
-        CriteriaQuery<CustomerEntity> customerEntityProjectionCriteriaQuery =  query.where(predicate);
-        TypedQuery<CustomerEntity> jpaQuery = entityManager.createQuery(customerEntityProjectionCriteriaQuery);
-        jpaQuery.setFirstResult(customerFilter.getPageNumber());
-        jpaQuery.setMaxResults(customerFilter.getPageSize());
-
-        List<CustomerEntity> results = jpaQuery.getResultList();
-        long total = this.customerRepository.count();
-
+        Page<CustomerEntity> customerEntityPage = this.customerRepository.findAll(specification, pageable);
         CustomerFilterResult customerFilterResult = new CustomerFilterResult();
-        customerFilterResult.setCustomers(AutoCustomerMapper.MAPPER.mapToCustomers(results));
+        customerFilterResult.setCustomers(AutoCustomerMapper.MAPPER.mapToCustomers(customerEntityPage.getContent()));
         customerFilterResult.setFoundNumber(this.customerRepository.count(specification));
-        customerFilterResult.setTotalNumber(total);
+        customerFilterResult.setTotalNumber(this.customerRepository.count());
 
         return customerFilterResult;
     }

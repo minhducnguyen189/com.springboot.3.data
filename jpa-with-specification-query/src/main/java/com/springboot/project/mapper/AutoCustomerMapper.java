@@ -1,7 +1,6 @@
 package com.springboot.project.mapper;
 
 import com.springboot.project.entity.CustomerEntity;
-import com.springboot.project.entity.projection.CustomerDtoProjection;
 import com.springboot.project.generated.model.CustomerFilterResponse;
 import com.springboot.project.generated.model.CustomerRequest;
 import com.springboot.project.generated.model.CustomerResponse;
