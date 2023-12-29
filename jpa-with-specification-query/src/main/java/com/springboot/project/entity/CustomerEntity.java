@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -31,6 +33,7 @@ import java.util.UUID;
         @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
         @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
 })
+@NamedEntityGraph(name = "CustomerEntity.loyaltyCard", attributeNodes = @NamedAttributeNode("loyaltyCard"))
 public class CustomerEntity {
 
     @Id

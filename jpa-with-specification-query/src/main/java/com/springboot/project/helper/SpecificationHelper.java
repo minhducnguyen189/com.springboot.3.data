@@ -1,9 +1,5 @@
 package com.springboot.project.helper;
 
-import com.springboot.project.entity.CustomerEntity;
-import com.springboot.project.entity.LoyaltyCardEntity;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
@@ -59,17 +55,6 @@ public class SpecificationHelper {
             return builder.and(predicates.toArray(new Predicate[0]));
         };
     }
-
-//    public static <T, S> Specification<T> joinTableSpecification(String joinTableName, String joinTablePkField) {
-//        return (root, query, builder) -> {
-//            List<Predicate> predicates = new ArrayList<>();
-//            if (Objects.isNull(joinTableName) || Objects.isNull(joinTablePkField)) {
-//                return builder.conjunction();
-//            }
-//            root.join(joinTableName, JoinType.INNER);
-//            return builder.conjunction();
-//        };
-//    }
 
     private static <T> boolean allAttributesNull(T probe) {
         // Check if all attributes in the probe object are null using reflection

@@ -10,12 +10,8 @@ import com.springboot.project.model.CustomerFilter;
 import com.springboot.project.model.CustomerFilterResult;
 import com.springboot.project.model.LoyaltyCard;
 import com.springboot.project.repository.CustomerRepository;
+import com.springboot.project.share.QueryFields;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -27,7 +23,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -84,13 +79,13 @@ public class CustomerService {
         Specification<CustomerEntity> specification = Specification
                 .where(SpecificationHelper.initSpecificationWithExample(customerEntityExample))
                 .and(SpecificationHelper.queryDateBetweenSpecification(
-                        "dob",
+                        QueryFields.DOB,
                         customerFilter.getDobFrom(),
                         customerFilter.getDobTo()
                 ))
                 .and(SpecificationHelper.queryJoinTableNumberEqualSpecification(
-                        "loyaltyCard",
-                        "points",
+                        QueryFields.LOYALTY_CARD,
+                        QueryFields.POINTS,
                         customerFilter.getLoyaltyCardPoints()
                 ));
 
