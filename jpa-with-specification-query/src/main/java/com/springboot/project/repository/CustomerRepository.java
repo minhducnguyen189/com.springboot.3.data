@@ -2,6 +2,7 @@ package com.springboot.project.repository;
 
 
 import com.springboot.project.entity.CustomerEntity;
+import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,9 +19,8 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, UUID>,
 
     CustomerEntity findCustomerByEmail(String email);
 
-    @Override
     @EntityGraph(value = "CustomerEntity.loyaltyCard")
-    Page<CustomerEntity> findAll(Specification<CustomerEntity> spec, Pageable pageable);
+    @Nonnull Page<CustomerEntity> findAll(@Nonnull Specification<CustomerEntity> spec, @Nonnull Pageable pageable);
 
 
 }
