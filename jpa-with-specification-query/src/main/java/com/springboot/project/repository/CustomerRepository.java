@@ -19,6 +19,15 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, UUID>,
 
     CustomerEntity findCustomerByEmail(String email);
 
+    /**
+     *
+     * If we use @EntityGraph with attributePaths
+     * Ex: @EntityGraph(attributePaths = {"loyaltyCard"})
+     * we don't need to declare the @NamedEntityGraph in
+     * the CustomerEntity.
+     * In the example above the `loyaltyCard` is the field name of the entity relationship
+     *
+     */
     @EntityGraph(value = "CustomerEntity.loyaltyCard")
     @Nonnull Page<CustomerEntity> findAll(@Nonnull Specification<CustomerEntity> spec, @Nonnull Pageable pageable);
 
