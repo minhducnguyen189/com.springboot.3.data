@@ -9,12 +9,13 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>hibernate-second-level-cache</module>
+        <module>hibernate-second-level-cache-jcache</module>
         <module>jpa-entity-lifecycle-events</module>
         <module>jpa-indexes</module>
         <module>postgres-full-text-search</module>
         <module>postgres-native-query-optional-params</module>
         <module>jpa-with-specification-query</module>
+        <module>hibernate-second-level-cache-ehcache</module>
     </modules>
 
     <properties>

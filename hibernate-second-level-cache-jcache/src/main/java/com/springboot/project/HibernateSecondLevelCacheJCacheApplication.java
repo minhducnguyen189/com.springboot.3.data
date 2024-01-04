@@ -6,8 +6,8 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @EnableCaching
 @SpringBootApplication
-public class HibernateSecondLevelCatchApplication {
+public class HibernateSecondLevelCacheJCacheApplication {
     public static void main(String[] args) {
-        SpringApplication.run(HibernateSecondLevelCatchApplication.class, args);
+        SpringApplication.run(HibernateSecondLevelCacheJCacheApplication.class, args);
     }
 }
