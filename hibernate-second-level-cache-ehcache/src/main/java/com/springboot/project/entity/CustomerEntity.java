@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +19,7 @@ import java.util.UUID;
         @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
         @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
 })
-@Cacheable
+@Cacheable("MY_CACHE")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CustomerEntity {
 
