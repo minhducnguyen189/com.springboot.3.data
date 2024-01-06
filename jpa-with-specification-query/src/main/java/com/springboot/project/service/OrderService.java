@@ -4,10 +4,11 @@ package com.springboot.project.service;
 import com.springboot.project.entity.CustomerEntity;
 import com.springboot.project.entity.ItemEntity;
 import com.springboot.project.entity.OrderEntity;
+import com.springboot.project.generated.model.ItemRequest;
+import com.springboot.project.generated.model.OrderRequest;
+import com.springboot.project.generated.model.OrderResponse;
 import com.springboot.project.mapper.AutoItemMapper;
 import com.springboot.project.mapper.AutoOrderMapper;
-import com.springboot.project.model.Item;
-import com.springboot.project.model.Order;
 import com.springboot.project.repository.CustomerRepository;
 import com.springboot.project.repository.OrderRepository;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class OrderService {
     private final CustomerRepository customerRepository;
     private final OrderRepository orderRepository;
 
-    public Order createOrder(UUID customerId, Order order) {
+    public OrderResponse createOrder(UUID customerId, OrderRequest order) {
         if (CollectionUtils.isEmpty(order.getItems())) {
             throw new RuntimeException("Can not create Order without any Item!");
         }
@@ -37,15 +38,15 @@ public class OrderService {
         orderEntity.setCustomer(customerEntity);
         orderEntity.setItems(itemEntities);
         orderEntity = this.orderRepository.save(orderEntity);
-        return AutoOrderMapper.MAPPER.mapToOrderFromEntity(orderEntity);
+        return AutoOrderMapper.MAPPER.mapToOrderResponse(orderEntity);
     }
 
-    public Order getOrderDetail(UUID customerId, UUID orderId) {
+    public OrderResponse getOrderDetail(UUID customerId, UUID orderId) {
         Optional<OrderEntity> orderEntityOpt = this.orderRepository.findById(orderId);
         if (orderEntityOpt.isPresent()) {
             OrderEntity orderEntity = orderEntityOpt.get();
             if(orderEntity.getCustomer().getId().equals(customerId)) {
-                return AutoOrderMapper.MAPPER.mapToOrderFromEntity(orderEntity);
+                return AutoOrderMapper.MAPPER.mapToOrderResponse(orderEntity);
             }
         }
         throw new RuntimeException("customerId or orderId is not correct or relative!");
@@ -59,7 +60,7 @@ public class OrderService {
         throw new RuntimeException("Customer Not Found!");
     }
 
-    private List<ItemEntity> mapToItemEntities(List<Item> items, OrderEntity orderEntity) {
+    private List<ItemEntity> mapToItemEntities(List<ItemRequest> items, OrderEntity orderEntity) {
         return items.stream()
                 .map(AutoItemMapper.MAPPER::toItemEntity)
                 .peek(i -> i.setOrder(orderEntity))

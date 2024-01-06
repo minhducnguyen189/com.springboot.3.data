@@ -2,8 +2,9 @@ package com.springboot.project.service;
 
 import com.springboot.project.entity.ItemEntity;
 import com.springboot.project.entity.OrderEntity;
+import com.springboot.project.generated.model.ItemRequest;
+import com.springboot.project.generated.model.ItemResponse;
 import com.springboot.project.mapper.AutoItemMapper;
-import com.springboot.project.model.Item;
 import com.springboot.project.repository.CustomerRepository;
 import com.springboot.project.repository.ItemRepository;
 import com.springboot.project.repository.OrderRepository;
@@ -24,7 +25,7 @@ public class ItemService {
     private final CustomerRepository customerRepository;
     private final OrderRepository orderRepository;
 
-    private List<Item> addItemToOrder(UUID orderId, List<Item> items) {
+    private List<ItemResponse> addItemToOrder(UUID orderId, List<ItemRequest> items) {
         OrderEntity orderEntity = this.getOrderEntity(orderId);
         List<ItemEntity> itemEntities = this.toItemEntities(items);
         itemEntities.forEach(i -> i.setOrder(orderEntity));
@@ -32,12 +33,12 @@ public class ItemService {
         return this.toItems(itemEntityResults);
     }
 
-    private List<ItemEntity> toItemEntities(List<Item> items) {
+    private List<ItemEntity> toItemEntities(List<ItemRequest> items) {
         return items.stream().map(AutoItemMapper.MAPPER::toItemEntity).collect(Collectors.toList());
     }
 
-    private List<Item> toItems(List<ItemEntity> itemEntities) {
-        return itemEntities.stream().map(AutoItemMapper.MAPPER::toItemFromEntity).collect(Collectors.toList());
+    private List<ItemResponse> toItems(List<ItemEntity> itemEntities) {
+        return itemEntities.stream().map(AutoItemMapper.MAPPER::toItemResponse).collect(Collectors.toList());
     }
 
     private OrderEntity getOrderEntity(UUID orderId) {

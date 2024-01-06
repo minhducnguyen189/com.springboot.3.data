@@ -8,12 +8,7 @@ import com.springboot.project.generated.model.CustomerRequest;
 import com.springboot.project.generated.model.CustomerResponse;
 import com.springboot.project.generated.model.LoyaltyCardRequest;
 import com.springboot.project.generated.model.LoyaltyCardResponse;
-import com.springboot.project.mapper.AutoCustomerMapper;
-import com.springboot.project.mapper.AutoLoyaltyCardMapper;
-import com.springboot.project.model.Customer;
 import com.springboot.project.model.CustomerFilter;
-import com.springboot.project.model.CustomerFilterResult;
-import com.springboot.project.model.LoyaltyCard;
 import com.springboot.project.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +29,13 @@ public class CustomerController implements CustomerApi {
 
     @Override
     public ResponseEntity<CustomerResponse> addCustomer(CustomerRequest customerRequest) {
-        Customer customer = AutoCustomerMapper.MAPPER.mapToCustomerFromRequest(customerRequest);
-        customer = this.customerService.createCustomer(customer);
-        CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
+        CustomerResponse customerResponse = this.customerService.createCustomer(customerRequest);
         return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<LoyaltyCardResponse> addloyaltyCard(UUID customerId, LoyaltyCardRequest loyaltyCardRequest) {
-        LoyaltyCard loyaltyCard = AutoLoyaltyCardMapper.MAPPER.mapToLoyaltyCardFromRequest(loyaltyCardRequest);
-        loyaltyCard = this.customerService.createLoyaltyCard(customerId, loyaltyCard);
-        LoyaltyCardResponse loyaltyCardResponse = AutoLoyaltyCardMapper.MAPPER.mapToLoyaltyCardResponse(loyaltyCard);
+        LoyaltyCardResponse loyaltyCardResponse = this.customerService.createLoyaltyCard(customerId, loyaltyCardRequest);
         return new ResponseEntity<>(loyaltyCardResponse, HttpStatus.OK);
     }
 
@@ -76,15 +67,13 @@ public class CustomerController implements CustomerApi {
         customerFilter.setPageNumber(pageNumber.orElse(0));
         customerFilter.setSortBy(sortBy.orElse(null));
         customerFilter.setSortOrder(sortOrder.orElse(null));
-        CustomerFilterResult customerFilterResult = this.customerService.filterCustomerWithEM(customerFilter);
-        CustomerFilterResponse customerFilterResponse = AutoCustomerMapper.MAPPER.mapToCustomerFilterResponse(customerFilterResult);
+        CustomerFilterResponse customerFilterResponse = this.customerService.filterCustomerWithEM(customerFilter);
         return new ResponseEntity<>(customerFilterResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<CustomerResponse> getCustomerInfo(UUID customerId) {
-        Customer customer = this.customerService.getCustomer(customerId);
-        CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
+        CustomerResponse customerResponse = this.customerService.getCustomer(customerId);
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
 
     }

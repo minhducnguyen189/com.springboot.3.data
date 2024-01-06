@@ -2,13 +2,11 @@ package com.springboot.project.service;
 
 import com.springboot.project.entity.CustomerEntity;
 import com.springboot.project.entity.LoyaltyCardEntity;
+import com.springboot.project.generated.model.*;
 import com.springboot.project.helper.SpecificationHelper;
 import com.springboot.project.mapper.AutoCustomerMapper;
 import com.springboot.project.mapper.AutoLoyaltyCardMapper;
-import com.springboot.project.model.Customer;
 import com.springboot.project.model.CustomerFilter;
-import com.springboot.project.model.CustomerFilterResult;
-import com.springboot.project.model.LoyaltyCard;
 import com.springboot.project.repository.CustomerRepository;
 import com.springboot.project.share.QueryFields;
 import jakarta.persistence.EntityManager;
@@ -35,25 +33,25 @@ public class CustomerService {
 
     private final EntityManager entityManager;
 
-    public Customer createCustomer(Customer customer) {
+    public CustomerResponse createCustomer(CustomerRequest customer) {
         CustomerEntity customerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
         customerEntity = this.customerRepository.save(customerEntity);
-        return AutoCustomerMapper.MAPPER.mapToCustomer(customerEntity);
+        return AutoCustomerMapper.MAPPER.mapToCustomerResponse(customerEntity);
     }
 
-    public LoyaltyCard createLoyaltyCard(UUID customerId, LoyaltyCard loyaltyCard) {
+    public LoyaltyCardResponse createLoyaltyCard(UUID customerId, LoyaltyCardRequest loyaltyCard) {
         CustomerEntity customerEntity = this.getCustomerEntity(customerId);
         LoyaltyCardEntity loyaltyCardEntity = AutoLoyaltyCardMapper.MAPPER.mapToLoyaltyCardEntity(loyaltyCard);
         customerEntity.setLoyaltyCard(loyaltyCardEntity);
         customerEntity = this.customerRepository.save(customerEntity);
-        return AutoLoyaltyCardMapper.MAPPER.mapToLoyaltyCard(customerEntity.getLoyaltyCard());
+        return AutoLoyaltyCardMapper.MAPPER.mapToLoyaltyCardResponse(customerEntity.getLoyaltyCard());
     }
 
-    public Customer getCustomer(UUID customerId) {
-        return AutoCustomerMapper.MAPPER.mapToCustomer(this.getCustomerEntity(customerId));
+    public CustomerResponse getCustomer(UUID customerId) {
+        return AutoCustomerMapper.MAPPER.mapToCustomerResponse(this.getCustomerEntity(customerId));
     }
 
-    public CustomerFilterResult filterCustomerWithEM(CustomerFilter customerFilter) {
+    public CustomerFilterResponse filterCustomerWithEM(CustomerFilter customerFilter) {
 
         Pageable pageable = PageRequest.of(customerFilter.getPageNumber(), customerFilter.getPageSize());
         if (Objects.nonNull(customerFilter.getSortBy()) && Objects.nonNull(customerFilter.getSortOrder())) {
@@ -90,7 +88,7 @@ public class CustomerService {
                 ));
 
         Page<CustomerEntity> customerEntityPage = this.customerRepository.findAll(specification, pageable);
-        CustomerFilterResult customerFilterResult = new CustomerFilterResult();
+        CustomerFilterResponse customerFilterResult = new CustomerFilterResponse();
         customerFilterResult.setCustomers(AutoCustomerMapper.MAPPER.mapToCustomers(customerEntityPage.getContent()));
         customerFilterResult.setFoundNumber(this.customerRepository.count(specification));
         customerFilterResult.setTotalNumber(this.customerRepository.count());
@@ -98,7 +96,7 @@ public class CustomerService {
         return customerFilterResult;
     }
 
-    public void updateCustomer(UUID customerId, Customer customer) {
+    public void updateCustomer(UUID customerId, CustomerRequest customer) {
         Optional<CustomerEntity> customerEntity = this.customerRepository.findById(customerId);
         if (customerEntity.isPresent()) {
             CustomerEntity existedCustomerEntity = customerEntity.get();
