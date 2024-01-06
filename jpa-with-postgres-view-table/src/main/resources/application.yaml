@@ -1,0 +1,21 @@
+# config datasource for Jpa and Jdbc
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/specification?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    open-in-view: true
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+    driverClassName: ${spring.datasource.driverClassName}
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    locations: classpath:db/migration

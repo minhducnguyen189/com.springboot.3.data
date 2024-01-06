@@ -16,6 +16,7 @@
         <module>postgres-native-query-optional-params</module>
         <module>jpa-with-specification-query</module>
         <module>hibernate-second-level-cache-ehcache</module>
+        <module>jpa-with-postgres-view-table</module>
     </modules>
 
     <properties>
