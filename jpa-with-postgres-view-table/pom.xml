@@ -21,13 +21,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.1.4</version>
+            <version>3.2.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>3.1.4</version>
+            <version>3.2.0</version>
         </dependency>
 
         <!-- postgresql driver -->
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-database-postgresql</artifactId>
-            <version>10.2.0</version>
+            <version>10.4.1</version>
             <scope>runtime</scope>
         </dependency>
 
