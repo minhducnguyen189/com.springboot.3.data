@@ -34,7 +34,7 @@ REFERENCES loyalty_cards(id);
 
 CREATE TABLE orders (
     id uuid NOT NULL,
-    created_at TIMESTAMP NOT NULL,
+    created_date TIMESTAMP NOT NULL,
     last_updated_date TIMESTAMP NOT NULL,
     order_name varchar(255) NULL,
     order_status varchar(100) NULL,
@@ -51,6 +51,7 @@ REFERENCES customers(id);
 
 CREATE TABLE items (
     id uuid NOT NULL,
+    item_name varchar(255),
     quantity INTEGER NULL,
     price DOUBLE PRECISION NULL,
     order_id uuid NULL
@@ -63,3 +64,18 @@ ALTER TABLE items
 ADD CONSTRAINT items_orders_foreign_key
 FOREIGN KEY(order_id)
 REFERENCES orders(id);
+
+CREATE VIEW customers_view AS
+    SELECT
+        c.id,
+        c.full_name,
+        c.email,
+        c.address,
+        c.phone,
+        c.gender,
+        c.dob,
+        l.points
+    FROM
+        customers c
+    LEFT JOIN
+        loyalty_cards l ON c.loyalty_card = l.id

@@ -1,6 +1,7 @@
 package com.springboot.project.service;
 
 import com.springboot.project.entity.CustomerEntity;
+import com.springboot.project.entity.CustomerViewEntity;
 import com.springboot.project.entity.LoyaltyCardEntity;
 import com.springboot.project.generated.model.*;
 import com.springboot.project.helper.SpecificationHelper;
@@ -8,8 +9,8 @@ import com.springboot.project.mapper.AutoCustomerMapper;
 import com.springboot.project.mapper.AutoLoyaltyCardMapper;
 import com.springboot.project.model.CustomerFilter;
 import com.springboot.project.repository.CustomerRepository;
+import com.springboot.project.repository.CustomerViewRepository;
 import com.springboot.project.share.QueryFields;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -26,7 +27,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    private final EntityManager entityManager;
+    private final CustomerViewRepository customerViewRepository;
 
     public CustomerResponse createCustomer(CustomerRequest customer) {
         CustomerEntity customerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
@@ -46,7 +47,7 @@ public class CustomerService {
         return AutoCustomerMapper.MAPPER.mapToCustomerResponse(this.getCustomerEntity(customerId));
     }
 
-    public CustomerFilterResponse filterCustomerWithEM(CustomerFilter customerFilter) {
+    public CustomerFilterResponse filterCustomerView(CustomerFilter customerFilter) {
 
         Pageable pageable = PageRequest.of(customerFilter.getPageNumber(), customerFilter.getPageSize());
         if (Objects.nonNull(customerFilter.getSortBy()) && Objects.nonNull(customerFilter.getSortOrder())) {
@@ -54,7 +55,7 @@ public class CustomerService {
                     Sort.by(Sort.Direction.valueOf(customerFilter.getSortOrder()), customerFilter.getSortBy()));
         }
 
-        CustomerEntity exampleCustomer = new CustomerEntity();
+        CustomerViewEntity exampleCustomer = new CustomerViewEntity();
         exampleCustomer.setFullName(customerFilter.getFullName());
         exampleCustomer.setEmail(customerFilter.getEmail());
         exampleCustomer.setAddress(customerFilter.getAddress());
@@ -67,9 +68,9 @@ public class CustomerService {
                 .withNullHandler(ExampleMatcher.NullHandler.IGNORE)
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example<CustomerEntity> customerEntityExample = Example.of(exampleCustomer, exampleMatcher);
+        Example<CustomerViewEntity> customerEntityExample = Example.of(exampleCustomer, exampleMatcher);
 
-        Specification<CustomerEntity> specification = Specification
+        Specification<CustomerViewEntity> specification = Specification
                 .where(SpecificationHelper.initSpecificationWithExample(customerEntityExample))
                 .and(SpecificationHelper.queryDateBetweenSpecification(
                         QueryFields.DOB,
@@ -82,11 +83,11 @@ public class CustomerService {
                         customerFilter.getLoyaltyCardPoints()
                 ));
 
-        Page<CustomerEntity> customerEntityPage = this.customerRepository.findAll(specification, pageable);
+        Page<CustomerViewEntity> customerEntityPage = this.customerViewRepository.findAll(specification, pageable);
         CustomerFilterResponse customerFilterResult = new CustomerFilterResponse();
-        customerFilterResult.setCustomers(AutoCustomerMapper.MAPPER.mapToCustomers(customerEntityPage.getContent()));
-        customerFilterResult.setFoundNumber(this.customerRepository.count(specification));
-        customerFilterResult.setTotalNumber(this.customerRepository.count());
+        customerFilterResult.setCustomers(AutoCustomerMapper.MAPPER.mapToCustomersView(customerEntityPage.getContent()));
+        customerFilterResult.setFoundNumber(this.customerViewRepository.count(specification));
+        customerFilterResult.setTotalNumber(this.customerViewRepository.count());
 
         return customerFilterResult;
     }
