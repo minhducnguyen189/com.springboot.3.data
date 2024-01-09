@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -28,5 +29,9 @@ public class CustomerViewEntity {
     private Gender gender;
     private Date dob;
     private Integer points;
+
+    @OneToMany
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private List<OrderEntity> orders;
 
 }
