@@ -80,13 +80,3 @@ CREATE VIEW customers_view AS
     LEFT JOIN
         loyalty_cards l ON c.loyalty_card = l.id;
 
-CREATE VIEW orders_view AS
-SELECT
-    o.id,
-    o.created_date,
-    o.last_updated_date,
-    o.order_name,
-    o.order_status,
-    o.customer_id
-FROM
-    orders o;

@@ -3,6 +3,8 @@ package com.springboot.project.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;
@@ -30,7 +32,8 @@ public class CustomerViewEntity {
     private Date dob;
     private Integer points;
 
-    @OneToMany
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private List<OrderEntity> orders;
 
