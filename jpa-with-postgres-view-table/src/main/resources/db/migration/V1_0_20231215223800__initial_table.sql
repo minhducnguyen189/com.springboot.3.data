@@ -74,7 +74,8 @@ CREATE VIEW customers_view AS
         c.phone,
         c.gender,
         c.dob,
-        l.points
+        l.points,
+        (current_date - l.issue_date) as card_issued_days
     FROM
         customers c
     LEFT JOIN

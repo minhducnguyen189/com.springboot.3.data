@@ -415,6 +415,9 @@ components:
             points:
               type: integer
               format: int32
+            cardIssuedDays:
+              type: integer
+              format: int32
             orders:
               type: array
               items:

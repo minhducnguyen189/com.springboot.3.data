@@ -31,6 +31,7 @@ public class CustomerViewEntity {
     private Gender gender;
     private Date dob;
     private Integer points;
+    private Integer cardIssuedDays;
 
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(fetch = FetchType.LAZY)
