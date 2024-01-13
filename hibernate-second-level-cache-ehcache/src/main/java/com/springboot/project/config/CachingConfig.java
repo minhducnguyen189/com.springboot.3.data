@@ -8,12 +8,11 @@ import org.ehcache.config.units.MemoryUnit;
 import org.ehcache.core.config.DefaultConfiguration;
 import org.ehcache.expiry.ExpiryPolicy;
 import org.ehcache.jsr107.EhcacheCachingProvider;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.cache.CacheManager;
 import javax.cache.Caching;
 import java.time.Duration;
 import java.util.HashMap;
@@ -45,15 +44,12 @@ public class CachingConfig {
         EhcacheCachingProvider ehcacheCachingProvider = (EhcacheCachingProvider) Caching.getCachingProvider(EhcacheCachingProvider.class.getName());
         DefaultConfiguration defaultConfiguration = new DefaultConfiguration(cacheMap, ehcacheCachingProvider.getDefaultClassLoader());
         javax.cache.CacheManager cacheManager = ehcacheCachingProvider.getCacheManager(ehcacheCachingProvider.getDefaultURI(), defaultConfiguration);
-        return new JCacheCacheManager(cacheManager);
+        return cacheManager;
     }
 
     private static ExpiryPolicy<Object, Object> createExpiryPolicy(Duration timeToLive, Duration timeToIdle) {
         return ExpiryPolicyBuilder
-                .expiry()
-                .create(timeToLive)
-                .access(timeToIdle)
-                .build();
+                .timeToIdleExpiration(timeToIdle);
     }
 
 
