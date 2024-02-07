@@ -1,5 +1,6 @@
 package com.springboot.project.entity;
 
+import jakarta.persistence.Cacheable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +15,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.cache.annotation.Cacheable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +31,8 @@ import java.util.UUID;
         @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
         @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
 })
-@Cacheable("MY_CACHE")
+@Cacheable
+@Cache(region = "test_cache", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CustomerEntity {
 
     @Id

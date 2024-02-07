@@ -1,7 +1,5 @@
 # config datasource for Jpa and Jdbc
 spring:
-  cache:
-    type: jcache
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/storage?useUnicode=true&characterEncoding=UTF-8
@@ -25,9 +23,3 @@ spring:
           use_query_cache: true
           region:
             factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
-        javax:
-          cache:
-            provider: org.ehcache.jsr107.EhcacheCachingProvider
-        jakarta:
-          cache:
-            missing_cache_strategy: create
