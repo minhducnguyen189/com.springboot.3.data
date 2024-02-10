@@ -21,5 +21,6 @@ spring:
         cache:
           use_second_level_cache: true
           use_query_cache: true
+          provider_configuration_file_resource_path: ehcache.xml
           region:
             factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
