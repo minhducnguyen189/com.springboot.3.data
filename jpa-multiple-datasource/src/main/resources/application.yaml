@@ -1,0 +1,34 @@
+
+application:
+  multiple-datasource:
+    primary-packages:
+      - "com.springboot.project."
+
+# Built in Spring Configuration
+spring:
+  datasource:
+    primary:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/primary?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: password
+    secondary:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5432/secondary?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    open-in-view: true
+    properties:
+      hibernate:
+        generate_statistics: true
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+    driverClassName: ${spring.datasource.driverClassName}
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    locations: classpath:db/migration

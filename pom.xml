@@ -17,6 +17,7 @@
         <module>jpa-with-specification-query</module>
         <module>hibernate-second-level-cache-ehcache</module>
         <module>jpa-with-postgres-view-table</module>
+        <module>jpa-multiple-datasource</module>
     </modules>
 
     <properties>

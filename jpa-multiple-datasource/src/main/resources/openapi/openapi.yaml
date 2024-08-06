@@ -1,0 +1,92 @@
+openapi: "3.0.3"
+info:
+  title: "Swagger Customer - OpenAPI 3.0"
+  description: "Everything about sample hibernate second level cache"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  version: "1.0.11"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
+servers:
+  - url: "https://petstore3.swagger.io/api/v1"
+tags:
+  - name: "customer"
+    description: "Everything about your customer"
+  - name: "global-customer"
+    description: "Everything about your global customer"
+paths:
+  /v1/customers:
+    post:
+      tags:
+        - "customer"
+      summary: "Add a customer to database"
+      description: "Add a customer to database"
+      operationId: "addCustomer"
+      requestBody:
+        description: "customer request dto"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        "201":
+          description: "successful created operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        "400":
+          description: "bad request operation"
+        "404":
+          description: "not found operation"
+        "500":
+          description: "internal server error operation"
+        default:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Customer:
+      allOf:
+        - $ref: '#/components/schemas/CustomerRequest'
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+    CustomerRequest:
+      type: "object"
+      properties:
+        fullName:
+          type: "string"
+        email:
+          type: "string"
+        address:
+          type: "string"
+        phone:
+          type: "string"
+        dob:
+          type: "string"
+          format: "date"
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        status:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
