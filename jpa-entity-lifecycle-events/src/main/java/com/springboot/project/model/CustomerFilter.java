@@ -7,9 +7,8 @@ import lombok.Setter;
 @Setter
 public class CustomerFilter {
 
-    private String fullName;
-    private String address;
-    private String email;
-    private String phone;
-
+  private String fullName;
+  private String address;
+  private String email;
+  private String phone;
 }

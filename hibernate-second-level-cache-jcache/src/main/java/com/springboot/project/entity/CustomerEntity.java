@@ -25,30 +25,37 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "customers", indexes = {
-        @Index(name = "uniqueEmailIndex", columnList = "email", unique = true),
-        @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
-        @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
-})
+@Table(
+    name = "customers",
+    indexes = {
+      @Index(name = "uniqueEmailIndex", columnList = "email", unique = true),
+      @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
+      @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
+    })
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CustomerEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private String fullName;
-    @Column(unique = true)
-    private String email;
-    private String address;
-    @Column(unique = true)
-    private String phone;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    private Date dob;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderEntity> orders = new ArrayList<>();
+  private String fullName;
 
+  @Column(unique = true)
+  private String email;
+
+  private String address;
+
+  @Column(unique = true)
+  private String phone;
+
+  @Enumerated(EnumType.STRING)
+  private Gender gender;
+
+  private Date dob;
+
+  @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+  @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<OrderEntity> orders = new ArrayList<>();
 }

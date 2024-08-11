@@ -18,24 +18,29 @@ import java.util.UUID;
 @Immutable
 public class CustomerViewEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private String fullName;
-    @Column(unique = true)
-    private String email;
-    private String address;
-    @Column(unique = true)
-    private String phone;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    private Date dob;
-    private Integer points;
-    private Integer cardIssuedDays;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private List<OrderEntity> orders;
+  private String fullName;
 
+  @Column(unique = true)
+  private String email;
+
+  private String address;
+
+  @Column(unique = true)
+  private String phone;
+
+  @Enumerated(EnumType.STRING)
+  private Gender gender;
+
+  private Date dob;
+  private Integer points;
+  private Integer cardIssuedDays;
+
+  @Fetch(FetchMode.SUBSELECT)
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinColumn(name = "customer_id", referencedColumnName = "id")
+  private List<OrderEntity> orders;
 }

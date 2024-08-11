@@ -13,57 +13,61 @@ import java.util.UUID;
 @EntityListeners(CustomerListener.class)
 @Entity
 @Slf4j
-@Table(name = "customers", indexes = {
-        @Index(name = "uniqueEmailIndex", columnList = "email", unique = true),
-        @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
-        @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
-})
+@Table(
+    name = "customers",
+    indexes = {
+      @Index(name = "uniqueEmailIndex", columnList = "email", unique = true),
+      @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
+      @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
+    })
 public class CustomerEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private String fullName;
-    private String email;
-    private String address;
-    private String phone;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    private Date dob;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @PrePersist
-    public void logNewCustomerAttempt() {
-        log.info("@PrePersist Attempting to add new Customer with username: " + this.fullName);
-    }
+  private String fullName;
+  private String email;
+  private String address;
+  private String phone;
 
-    @PostPersist
-    public void logNewCustomerAdded() {
-        log.info("@PostPersist Added Customer '" + this.fullName + "' with ID: " + this.id);
-    }
+  @Enumerated(EnumType.STRING)
+  private Gender gender;
 
-    @PreRemove
-    public void logCustomerRemovalAttempt() {
-        log.info("@PreRemove Attempting to delete Customer: " + this.fullName);
-    }
+  private Date dob;
 
-    @PostRemove
-    public void logCustomerRemoval() {
-        log.info("@PostRemove Deleted Customer: " + this.fullName);
-    }
+  @PrePersist
+  public void logNewCustomerAttempt() {
+    log.info("@PrePersist Attempting to add new Customer with username: " + this.fullName);
+  }
 
-    @PreUpdate
-    public void logCustomerUpdateAttempt() {
-        log.info("@PreUpdate Attempting to update Customer: " + this.fullName);
-    }
+  @PostPersist
+  public void logNewCustomerAdded() {
+    log.info("@PostPersist Added Customer '" + this.fullName + "' with ID: " + this.id);
+  }
 
-    @PostUpdate
-    public void logCustomerUpdate() {
-        log.info("@PostUpdate Updated Customer: " + this.fullName);
-    }
+  @PreRemove
+  public void logCustomerRemovalAttempt() {
+    log.info("@PreRemove Attempting to delete Customer: " + this.fullName);
+  }
 
-    @PostLoad
-    public void logCustomerLoad() {
-        log.info("@PostLoad load customer: " + this.fullName);
-    }
+  @PostRemove
+  public void logCustomerRemoval() {
+    log.info("@PostRemove Deleted Customer: " + this.fullName);
+  }
 
+  @PreUpdate
+  public void logCustomerUpdateAttempt() {
+    log.info("@PreUpdate Attempting to update Customer: " + this.fullName);
+  }
+
+  @PostUpdate
+  public void logCustomerUpdate() {
+    log.info("@PostUpdate Updated Customer: " + this.fullName);
+  }
+
+  @PostLoad
+  public void logCustomerLoad() {
+    log.info("@PostLoad load customer: " + this.fullName);
+  }
 }

@@ -24,28 +24,28 @@ import java.util.Map;
 @EnableCaching
 public class CachingConfig {
 
-    private static final String MY_CACHE = "MY_CACHE";
+  private static final String MY_CACHE = "MY_CACHE";
 
-    @Bean
-    public CacheManager jCacheManager() {
-        CachingProvider cachingProvider = Caching.getCachingProvider();
-        CacheManager cacheManager = cachingProvider.getCacheManager();
+  @Bean
+  public CacheManager jCacheManager() {
+    CachingProvider cachingProvider = Caching.getCachingProvider();
+    CacheManager cacheManager = cachingProvider.getCacheManager();
 
-        Map<String, CacheConfiguration<?, ?>> cacheMap = new HashMap<>();
+    Map<String, CacheConfiguration<?, ?>> cacheMap = new HashMap<>();
 
-        ResourcePoolsBuilder resourcePoolsBuilder = ResourcePoolsBuilder
-                .heap(100)
-                .offheap(10, MemoryUnit.MB);
+    ResourcePoolsBuilder resourcePoolsBuilder =
+        ResourcePoolsBuilder.heap(100).offheap(10, MemoryUnit.MB);
 
-        CacheConfiguration<Object, Object> cacheConfiguration = CacheConfigurationBuilder
-                .newCacheConfigurationBuilder(Object.class, Object.class, resourcePoolsBuilder)
-                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(1)))
-                .build();
+    CacheConfiguration<Object, Object> cacheConfiguration =
+        CacheConfigurationBuilder.newCacheConfigurationBuilder(
+                Object.class, Object.class, resourcePoolsBuilder)
+            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMinutes(1)))
+            .build();
 
-        javax.cache.configuration.Configuration<Object, Object> cacheConfig = Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration);
+    javax.cache.configuration.Configuration<Object, Object> cacheConfig =
+        Eh107Configuration.fromEhcacheCacheConfiguration(cacheConfiguration);
 
-        cacheManager.createCache(MY_CACHE, cacheConfig);
-        return cacheManager;
-    }
-
+    cacheManager.createCache(MY_CACHE, cacheConfig);
+    return cacheManager;
+  }
 }

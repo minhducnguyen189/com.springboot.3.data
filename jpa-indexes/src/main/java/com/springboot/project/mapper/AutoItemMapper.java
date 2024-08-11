@@ -10,17 +10,13 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AutoItemMapper {
 
-    AutoItemMapper MAPPER = Mappers.getMapper(AutoItemMapper.class);
+  AutoItemMapper MAPPER = Mappers.getMapper(AutoItemMapper.class);
 
-    Item toItemFromRequest(ItemRequest itemRequest);
+  Item toItemFromRequest(ItemRequest itemRequest);
 
-    Item toItemFromEntity(ItemEntity itemEntity);
+  Item toItemFromEntity(ItemEntity itemEntity);
 
-    ItemEntity toItemEntity(Item item);
+  ItemEntity toItemEntity(Item item);
 
-    ItemResponse toItemResponse(Item item);
-
-
-
-
+  ItemResponse toItemResponse(Item item);
 }

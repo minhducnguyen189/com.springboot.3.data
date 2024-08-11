@@ -13,17 +13,16 @@ import java.util.UUID;
 @Table(name = "loyalty_cards")
 public class LoyaltyCardEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    private Integer points;
+  private Integer points;
 
-    private Date issueDate;
+  private Date issueDate;
 
-    @PrePersist
-    private void preCreate() {
-        this.issueDate = new Date();
-    }
-
+  @PrePersist
+  private void preCreate() {
+    this.issueDate = new Date();
+  }
 }

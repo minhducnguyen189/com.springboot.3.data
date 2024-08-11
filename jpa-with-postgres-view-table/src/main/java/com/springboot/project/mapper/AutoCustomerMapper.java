@@ -14,18 +14,16 @@ import java.util.List;
 @Mapper
 public interface AutoCustomerMapper {
 
-    AutoCustomerMapper MAPPER = Mappers.getMapper(AutoCustomerMapper.class);
+  AutoCustomerMapper MAPPER = Mappers.getMapper(AutoCustomerMapper.class);
 
-    CustomerEntity mapToCustomerEntity(CustomerRequest customer);
+  CustomerEntity mapToCustomerEntity(CustomerRequest customer);
 
-    CustomerResponse mapToCustomerResponse(CustomerEntity customer);
+  CustomerResponse mapToCustomerResponse(CustomerEntity customer);
 
-    void updateCustomerEntity(@MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
+  void updateCustomerEntity(
+      @MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
 
-    List<CustomerFilterDetailResponse> mapToCustomers(List<CustomerEntity> customerEntities);
+  List<CustomerFilterDetailResponse> mapToCustomers(List<CustomerEntity> customerEntities);
 
-    List<CustomerFilterDetailResponse> mapToCustomersView(List<CustomerViewEntity> customerEntities);
-
-
-
+  List<CustomerFilterDetailResponse> mapToCustomersView(List<CustomerViewEntity> customerEntities);
 }

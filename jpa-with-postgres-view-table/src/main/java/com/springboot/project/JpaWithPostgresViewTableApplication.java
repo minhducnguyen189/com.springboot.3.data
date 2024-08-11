@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class JpaWithPostgresViewTableApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(JpaWithPostgresViewTableApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(JpaWithPostgresViewTableApplication.class, args);
+  }
 }

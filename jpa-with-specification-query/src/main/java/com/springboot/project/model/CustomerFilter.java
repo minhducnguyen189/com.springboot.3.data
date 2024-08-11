@@ -10,17 +10,16 @@ import java.util.Date;
 @Setter
 public class CustomerFilter {
 
-    private String fullName;
-    private String email;
-    private String address;
-    private String phone;
-    private Gender gender;
-    private Date dobFrom;
-    private Date dobTo;
-    private Integer loyaltyCardPoints;
-    private Integer pageSize;
-    private Integer pageNumber;
-    private String sortBy;
-    private String sortOrder;
-
+  private String fullName;
+  private String email;
+  private String address;
+  private String phone;
+  private Gender gender;
+  private Date dobFrom;
+  private Date dobTo;
+  private Integer loyaltyCardPoints;
+  private Integer pageSize;
+  private Integer pageNumber;
+  private String sortBy;
+  private String sortOrder;
 }

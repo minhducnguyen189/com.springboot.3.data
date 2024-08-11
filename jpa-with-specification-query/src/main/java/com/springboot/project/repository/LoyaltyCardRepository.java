@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface LoyaltyCardRepository extends JpaRepository<LoyaltyCardEntity, UUID> {
-
-}
+public interface LoyaltyCardRepository extends JpaRepository<LoyaltyCardEntity, UUID> {}

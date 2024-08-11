@@ -8,7 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface CustomerViewRepository extends JpaRepository<CustomerViewEntity, UUID>,
-        JpaSpecificationExecutor<CustomerViewEntity> {
-
-}
+public interface CustomerViewRepository
+    extends JpaRepository<CustomerViewEntity, UUID>, JpaSpecificationExecutor<CustomerViewEntity> {}

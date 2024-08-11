@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class JpaIndexesApp {
-    public static void main(String[] args) {
-        SpringApplication.run(JpaIndexesApp.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(JpaIndexesApp.class, args);
+  }
 }

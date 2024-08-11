@@ -23,25 +23,29 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "customers", indexes = {
-        @Index(name = "uniqueEmailIndex", columnList = "email", unique = true),
-        @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
-        @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
-})
+@Table(
+    name = "customers",
+    indexes = {
+      @Index(name = "uniqueEmailIndex", columnList = "email", unique = true),
+      @Index(name = "uniquePhoneIndex", columnList = "phone", unique = true),
+      @Index(name = "uniqueMultiIndex", columnList = "email, phone", unique = true)
+    })
 public class CustomerEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private String fullName;
-    private String email;
-    private String address;
-    private String phone;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    private Date dob;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderEntity> orders = new ArrayList<>();
+  private String fullName;
+  private String email;
+  private String address;
+  private String phone;
 
+  @Enumerated(EnumType.STRING)
+  private Gender gender;
+
+  private Date dob;
+
+  @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<OrderEntity> orders = new ArrayList<>();
 }

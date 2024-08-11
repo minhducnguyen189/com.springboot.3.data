@@ -15,26 +15,26 @@ import java.util.List;
 @Mapper
 public interface AutoCustomerMapper {
 
-    AutoCustomerMapper MAPPER = Mappers.getMapper(AutoCustomerMapper.class);
+  AutoCustomerMapper MAPPER = Mappers.getMapper(AutoCustomerMapper.class);
 
-    Customer mapToCustomerFromRequest(CustomerRequest customerRequest);
+  Customer mapToCustomerFromRequest(CustomerRequest customerRequest);
 
-    Customer mapToCustomerFromDetail(CustomerDetail customerDetail);
+  Customer mapToCustomerFromDetail(CustomerDetail customerDetail);
 
-    Customer mapToCustomer(CustomerEntity customerEntity);
+  Customer mapToCustomer(CustomerEntity customerEntity);
 
-    CustomerEntity mapToCustomerEntity(Customer customer);
+  CustomerEntity mapToCustomerEntity(Customer customer);
 
-    CustomerDetail mapToCustomerDetail(Customer customer);
+  CustomerDetail mapToCustomerDetail(Customer customer);
 
-    void updateCustomerEntity(@MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
+  void updateCustomerEntity(
+      @MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
 
-    List<CustomerEntity> mapToCustomerEntities(List<Customer> customers);
+  List<CustomerEntity> mapToCustomerEntities(List<Customer> customers);
 
-    List<Customer> mapToCustomers(List<CustomerEntity> customerEntities);
+  List<Customer> mapToCustomers(List<CustomerEntity> customerEntities);
 
-    List<CustomerDetail> mapToCustomerDetails(List<Customer> customers);
+  List<CustomerDetail> mapToCustomerDetails(List<Customer> customers);
 
-    CustomerFilter mapToCustomerFilter(CustomerFilterRequest customerFilterRequest);
-
+  CustomerFilter mapToCustomerFilter(CustomerFilterRequest customerFilterRequest);
 }

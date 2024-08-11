@@ -13,9 +13,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Order {
 
-    private UUID id;
-    private String orderName;
-    private OrderStatus orderStatus;
-    private List<Item> items;
-
+  private UUID id;
+  private String orderName;
+  private OrderStatus orderStatus;
+  private List<Item> items;
 }

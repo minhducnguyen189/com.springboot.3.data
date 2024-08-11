@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class PostgresNativeQueryOptionalParamsApp {
-    public static void main(String[] args) {
-        SpringApplication.run(PostgresNativeQueryOptionalParamsApp.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(PostgresNativeQueryOptionalParamsApp.class, args);
+  }
 }

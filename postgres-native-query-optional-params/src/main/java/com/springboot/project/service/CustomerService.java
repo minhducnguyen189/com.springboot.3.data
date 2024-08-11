@@ -17,54 +17,53 @@ import java.util.UUID;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerService {
 
-    private final CustomerRepository customerRepository;
+  private final CustomerRepository customerRepository;
 
-    public Customer createCustomer(Customer customer) {
-        CustomerEntity customerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
-        customerEntity = this.customerRepository.save(customerEntity);
-        return AutoCustomerMapper.MAPPER.mapToCustomer(customerEntity);
+  public Customer createCustomer(Customer customer) {
+    CustomerEntity customerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
+    customerEntity = this.customerRepository.save(customerEntity);
+    return AutoCustomerMapper.MAPPER.mapToCustomer(customerEntity);
+  }
+
+  public Customer getCustomer(UUID customerId) {
+    Optional<CustomerEntity> customerEntity = this.customerRepository.findById(customerId);
+    if (customerEntity.isPresent()) {
+      return AutoCustomerMapper.MAPPER.mapToCustomer(customerEntity.get());
     }
+    throw new RuntimeException("Customer Not Found!");
+  }
 
-    public Customer getCustomer(UUID customerId) {
-        Optional<CustomerEntity> customerEntity = this.customerRepository.findById(customerId);
-        if (customerEntity.isPresent()) {
-            return AutoCustomerMapper.MAPPER.mapToCustomer(customerEntity.get());
-        }
-        throw new RuntimeException("Customer Not Found!");
+  public List<Customer> filterCustomers(CustomerFilter customerFilter) {
+    List<CustomerEntity> foundCustomers =
+        this.customerRepository.filterCustomers(
+            customerFilter.getFullName(),
+            customerFilter.getEmail(),
+            customerFilter.getAddress(),
+            customerFilter.getPhone());
+    return AutoCustomerMapper.MAPPER.mapToCustomers(foundCustomers);
+  }
+
+  public void updateCustomer(UUID customerId, Customer customer) {
+    Optional<CustomerEntity> customerEntity = this.customerRepository.findById(customerId);
+    if (customerEntity.isPresent()) {
+      CustomerEntity existedCustomerEntity = customerEntity.get();
+      CustomerEntity updateCustomerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
+      AutoCustomerMapper.MAPPER.updateCustomerEntity(existedCustomerEntity, updateCustomerEntity);
+      this.customerRepository.save(existedCustomerEntity);
+      return;
     }
+    throw new RuntimeException("Customer Not Found!");
+  }
 
-    public List<Customer> filterCustomers(CustomerFilter customerFilter) {
-        List<CustomerEntity> foundCustomers = this.customerRepository
-                .filterCustomers(
-                        customerFilter.getFullName(),
-                        customerFilter.getEmail(),
-                        customerFilter.getAddress(),
-                        customerFilter.getPhone());
-        return AutoCustomerMapper.MAPPER.mapToCustomers(foundCustomers);
+  public void deleteCustomer(UUID customerId) {
+    this.customerRepository.deleteById(customerId);
+  }
+
+  public Customer findCustomerByEmail(String email) {
+    Optional<CustomerEntity> customerEntity = this.customerRepository.findCustomerByEmail(email);
+    if (customerEntity.isPresent()) {
+      return AutoCustomerMapper.MAPPER.mapToCustomer(customerEntity.get());
     }
-
-    public void updateCustomer(UUID customerId, Customer customer) {
-        Optional<CustomerEntity> customerEntity = this.customerRepository.findById(customerId);
-        if (customerEntity.isPresent()) {
-            CustomerEntity existedCustomerEntity = customerEntity.get();
-            CustomerEntity updateCustomerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
-            AutoCustomerMapper.MAPPER.updateCustomerEntity(existedCustomerEntity, updateCustomerEntity);
-            this.customerRepository.save(existedCustomerEntity);
-            return;
-        }
-        throw new RuntimeException("Customer Not Found!");
-    }
-
-    public void deleteCustomer(UUID customerId) {
-        this.customerRepository.deleteById(customerId);
-    }
-
-    public Customer findCustomerByEmail(String email) {
-        Optional<CustomerEntity> customerEntity = this.customerRepository.findCustomerByEmail(email);
-        if (customerEntity.isPresent()) {
-            return AutoCustomerMapper.MAPPER.mapToCustomer(customerEntity.get());
-        }
-        throw new RuntimeException("Customer Not Found! with email: " + email);
-    }
-
+    throw new RuntimeException("Customer Not Found! with email: " + email);
+  }
 }

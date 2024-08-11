@@ -10,12 +10,12 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AutoCustomerMapper {
 
-    AutoCustomerMapper MAPPER = Mappers.getMapper(AutoCustomerMapper.class);
+  AutoCustomerMapper MAPPER = Mappers.getMapper(AutoCustomerMapper.class);
 
-    CustomerEntity mapToCustomerEntity(CustomerRequest customer);
+  CustomerEntity mapToCustomerEntity(CustomerRequest customer);
 
-    CustomerResponse mapToCustomerResponse(CustomerEntity customerEntity);
+  CustomerResponse mapToCustomerResponse(CustomerEntity customerEntity);
 
-    void updateCustomerEntity(@MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
-
+  void updateCustomerEntity(
+      @MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
 }

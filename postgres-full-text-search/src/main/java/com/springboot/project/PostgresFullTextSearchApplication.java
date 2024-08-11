@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class PostgresFullTextSearchApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(PostgresFullTextSearchApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(PostgresFullTextSearchApplication.class, args);
+  }
 }

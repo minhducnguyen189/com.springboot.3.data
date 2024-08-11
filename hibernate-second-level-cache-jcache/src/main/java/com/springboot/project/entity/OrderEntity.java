@@ -32,38 +32,36 @@ import java.util.UUID;
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class OrderEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    private String orderName;
+  private String orderName;
 
-    private LocalDateTime createdDate;
+  private LocalDateTime createdDate;
 
-    private LocalDateTime lastUpdatedDate;
+  private LocalDateTime lastUpdatedDate;
 
-    @Enumerated(value = EnumType.STRING)
-    private OrderStatus orderStatus;
+  @Enumerated(value = EnumType.STRING)
+  private OrderStatus orderStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private CustomerEntity customer;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "customer_id")
+  private CustomerEntity customer;
 
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ItemEntity> items = new ArrayList<>();
+  @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<ItemEntity> items = new ArrayList<>();
 
-    @PrePersist
-    private void setCreatedDate() {
-        LocalDateTime localDateTime = LocalDateTime.now();
-        this.createdDate = localDateTime;
-        this.lastUpdatedDate = localDateTime;
-    }
+  @PrePersist
+  private void setCreatedDate() {
+    LocalDateTime localDateTime = LocalDateTime.now();
+    this.createdDate = localDateTime;
+    this.lastUpdatedDate = localDateTime;
+  }
 
-    @PreUpdate
-    private void setLastUpdatedDate() {
-        this.lastUpdatedDate = LocalDateTime.now();
-    }
-
-
+  @PreUpdate
+  private void setLastUpdatedDate() {
+    this.lastUpdatedDate = LocalDateTime.now();
+  }
 }

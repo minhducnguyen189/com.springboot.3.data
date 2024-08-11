@@ -14,28 +14,35 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "customers")
-@NamedEntityGraph(name = "CustomerEntity.loyaltyCard", attributeNodes = @NamedAttributeNode("loyaltyCard"))
+@NamedEntityGraph(
+    name = "CustomerEntity.loyaltyCard",
+    attributeNodes = @NamedAttributeNode("loyaltyCard"))
 public class CustomerEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private String fullName;
-    @Column(unique = true)
-    private String email;
-    private String address;
-    @Column(unique = true)
-    private String phone;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    private Date dob;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @JoinColumn(name = "loyalty_card")
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private LoyaltyCardEntity loyaltyCard;
+  private String fullName;
 
-    @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderEntity> orders;
+  @Column(unique = true)
+  private String email;
 
+  private String address;
+
+  @Column(unique = true)
+  private String phone;
+
+  @Enumerated(EnumType.STRING)
+  private Gender gender;
+
+  private Date dob;
+
+  @JoinColumn(name = "loyalty_card")
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private LoyaltyCardEntity loyaltyCard;
+
+  @Fetch(FetchMode.SUBSELECT)
+  @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<OrderEntity> orders;
 }

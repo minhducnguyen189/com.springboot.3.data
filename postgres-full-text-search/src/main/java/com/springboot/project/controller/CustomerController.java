@@ -21,36 +21,37 @@ import java.util.UUID;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerController implements CustomerApi {
 
-    private final CustomerService customerService;
+  private final CustomerService customerService;
 
-    @Override
-    public ResponseEntity<CustomerResponse> addCustomer(CustomerRequest customerRequest) {
-        Customer customer = AutoCustomerMapper.MAPPER.mapToCustomerFromRequest(customerRequest);
-        customer = this.customerService.createCustomer(customer);
-        CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
-        return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
-    }
+  @Override
+  public ResponseEntity<CustomerResponse> addCustomer(CustomerRequest customerRequest) {
+    Customer customer = AutoCustomerMapper.MAPPER.mapToCustomerFromRequest(customerRequest);
+    customer = this.customerService.createCustomer(customer);
+    CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
+    return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
+  }
 
-    @Override
-    public ResponseEntity<CustomerResponse> getCustomerInfo(UUID customerId) {
-        Customer customer = this.customerService.getCustomer(customerId);
-        CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
-        return new ResponseEntity<>(customerResponse, HttpStatus.OK);
+  @Override
+  public ResponseEntity<CustomerResponse> getCustomerInfo(UUID customerId) {
+    Customer customer = this.customerService.getCustomer(customerId);
+    CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
+    return new ResponseEntity<>(customerResponse, HttpStatus.OK);
+  }
 
-    }
+  @Override
+  public ResponseEntity<CustomerResponse> getCustomerInfoByEmail(String email) {
+    Customer customer = this.customerService.findCustomerByEmail(email);
+    CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
+    return new ResponseEntity<>(customerResponse, HttpStatus.OK);
+  }
 
-    @Override
-    public ResponseEntity<CustomerResponse> getCustomerInfoByEmail(String email) {
-        Customer customer = this.customerService.findCustomerByEmail(email);
-        CustomerResponse customerResponse = AutoCustomerMapper.MAPPER.mapToCustomerResponse(customer);
-        return new ResponseEntity<>(customerResponse, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<CustomerFilterResponse> searchCustomers(String keyword, Integer pageSize, Integer pageNumber) {
-        CustomerFilterResult customerFilterResult = this.customerService.searchCustomer(keyword, pageSize, pageNumber);
-        CustomerFilterResponse customerFilterResponse = AutoCustomerMapper.MAPPER.mapToCustomerFilterResponse(customerFilterResult);
-        return new ResponseEntity<>(customerFilterResponse, HttpStatus.OK);
-    }
-
-    }
+  @Override
+  public ResponseEntity<CustomerFilterResponse> searchCustomers(
+      String keyword, Integer pageSize, Integer pageNumber) {
+    CustomerFilterResult customerFilterResult =
+        this.customerService.searchCustomer(keyword, pageSize, pageNumber);
+    CustomerFilterResponse customerFilterResponse =
+        AutoCustomerMapper.MAPPER.mapToCustomerFilterResponse(customerFilterResult);
+    return new ResponseEntity<>(customerFilterResponse, HttpStatus.OK);
+  }
+}

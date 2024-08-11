@@ -14,13 +14,12 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Customer {
 
-    private UUID id;
-    private String fullName;
-    private String email;
-    private String address;
-    private String phone;
-    private Gender gender;
-    private Date dob;
-    private List<Order> orders;
-
+  private UUID id;
+  private String fullName;
+  private String email;
+  private String address;
+  private String phone;
+  private Gender gender;
+  private Date dob;
+  private List<Order> orders;
 }

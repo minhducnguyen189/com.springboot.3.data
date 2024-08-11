@@ -12,19 +12,18 @@ import java.util.UUID;
 @Table(name = "items")
 public class ItemEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @Column(unique = true)
-    private String itemName;
+  @Column(unique = true)
+  private String itemName;
 
-    private Long quantity;
+  private Long quantity;
 
-    private Float price;
+  private Float price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private OrderEntity order;
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "order_id")
+  private OrderEntity order;
 }

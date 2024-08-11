@@ -9,11 +9,9 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AutoOrderMapper {
 
-    AutoOrderMapper MAPPER = Mappers.getMapper(AutoOrderMapper.class);
+  AutoOrderMapper MAPPER = Mappers.getMapper(AutoOrderMapper.class);
 
-    OrderEntity mapToEntity(OrderRequest order);
+  OrderEntity mapToEntity(OrderRequest order);
 
-    OrderResponse mapToOrderResponse(OrderEntity order);
-
-
+  OrderResponse mapToOrderResponse(OrderEntity order);
 }

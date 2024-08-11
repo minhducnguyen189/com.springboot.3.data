@@ -9,11 +9,9 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AutoItemMapper {
 
-    AutoItemMapper MAPPER = Mappers.getMapper(AutoItemMapper.class);
+  AutoItemMapper MAPPER = Mappers.getMapper(AutoItemMapper.class);
 
-    ItemResponse toItemFromEntity(ItemEntity itemEntity);
+  ItemResponse toItemFromEntity(ItemEntity itemEntity);
 
-    ItemEntity toItemEntity(ItemRequest item);
-
-
+  ItemEntity toItemEntity(ItemRequest item);
 }

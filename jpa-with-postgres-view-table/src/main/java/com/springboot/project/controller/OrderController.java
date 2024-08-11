@@ -1,6 +1,5 @@
 package com.springboot.project.controller;
 
-
 import com.springboot.project.generated.api.OrderApi;
 import com.springboot.project.generated.model.OrderRequest;
 import com.springboot.project.generated.model.OrderResponse;
@@ -17,18 +16,17 @@ import java.util.UUID;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderController implements OrderApi {
 
-    private final OrderService orderService;
+  private final OrderService orderService;
 
-    @Override
-    public ResponseEntity<OrderResponse> addOrder(UUID customerId, OrderRequest orderRequest) {
-        OrderResponse orderResponse = this.orderService.createOrder(customerId, orderRequest);
-        return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
-    }
+  @Override
+  public ResponseEntity<OrderResponse> addOrder(UUID customerId, OrderRequest orderRequest) {
+    OrderResponse orderResponse = this.orderService.createOrder(customerId, orderRequest);
+    return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
+  }
 
-    @Override
-    public ResponseEntity<OrderResponse> getOrderDetail(UUID customerId, UUID orderId) {
-        OrderResponse orderResponse = this.orderService.getOrderDetail(customerId, orderId);
-        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
-    }
-
+  @Override
+  public ResponseEntity<OrderResponse> getOrderDetail(UUID customerId, UUID orderId) {
+    OrderResponse orderResponse = this.orderService.getOrderDetail(customerId, orderId);
+    return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+  }
 }

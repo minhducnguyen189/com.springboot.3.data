@@ -20,32 +20,33 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ItemService {
 
-    private final ItemRepository itemRepository;
-    private final CustomerRepository customerRepository;
-    private final OrderRepository orderRepository;
+  private final ItemRepository itemRepository;
+  private final CustomerRepository customerRepository;
+  private final OrderRepository orderRepository;
 
-    private List<Item> addItemToOrder(UUID orderId, List<Item> items) {
-        OrderEntity orderEntity = this.getOrderEntity(orderId);
-        List<ItemEntity> itemEntities = this.toItemEntities(items);
-        itemEntities.forEach(i -> i.setOrder(orderEntity));
-        List<ItemEntity> itemEntityResults = this.itemRepository.saveAll(itemEntities);
-        return this.toItems(itemEntityResults);
+  private List<Item> addItemToOrder(UUID orderId, List<Item> items) {
+    OrderEntity orderEntity = this.getOrderEntity(orderId);
+    List<ItemEntity> itemEntities = this.toItemEntities(items);
+    itemEntities.forEach(i -> i.setOrder(orderEntity));
+    List<ItemEntity> itemEntityResults = this.itemRepository.saveAll(itemEntities);
+    return this.toItems(itemEntityResults);
+  }
+
+  private List<ItemEntity> toItemEntities(List<Item> items) {
+    return items.stream().map(AutoItemMapper.MAPPER::toItemEntity).collect(Collectors.toList());
+  }
+
+  private List<Item> toItems(List<ItemEntity> itemEntities) {
+    return itemEntities.stream()
+        .map(AutoItemMapper.MAPPER::toItemFromEntity)
+        .collect(Collectors.toList());
+  }
+
+  private OrderEntity getOrderEntity(UUID orderId) {
+    Optional<OrderEntity> orderEntity = this.orderRepository.findById(orderId);
+    if (orderEntity.isPresent()) {
+      return orderEntity.get();
     }
-
-    private List<ItemEntity> toItemEntities(List<Item> items) {
-        return items.stream().map(AutoItemMapper.MAPPER::toItemEntity).collect(Collectors.toList());
-    }
-
-    private List<Item> toItems(List<ItemEntity> itemEntities) {
-        return itemEntities.stream().map(AutoItemMapper.MAPPER::toItemFromEntity).collect(Collectors.toList());
-    }
-
-    private OrderEntity getOrderEntity(UUID orderId) {
-        Optional<OrderEntity> orderEntity = this.orderRepository.findById(orderId);
-        if (orderEntity.isPresent()) {
-            return orderEntity.get();
-        }
-        throw new RuntimeException("Order Not Found!");
-    }
-
+    throw new RuntimeException("Order Not Found!");
+  }
 }

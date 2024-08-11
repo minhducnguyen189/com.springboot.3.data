@@ -11,11 +11,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Item {
 
-
-    private UUID id;
-    private UUID orderId;
-    private String itemName;
-    private Long quantity;
-    private Float price;
-
+  private UUID id;
+  private UUID orderId;
+  private String itemName;
+  private Long quantity;
+  private Float price;
 }

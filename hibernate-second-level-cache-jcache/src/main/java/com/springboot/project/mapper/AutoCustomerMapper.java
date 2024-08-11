@@ -11,18 +11,16 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AutoCustomerMapper {
 
-    AutoCustomerMapper MAPPER = Mappers.getMapper(AutoCustomerMapper.class);
+  AutoCustomerMapper MAPPER = Mappers.getMapper(AutoCustomerMapper.class);
 
-    Customer mapToCustomerFromRequest(CustomerRequest customerRequest);
+  Customer mapToCustomerFromRequest(CustomerRequest customerRequest);
 
-    Customer mapToCustomer(CustomerEntity customerEntity);
+  Customer mapToCustomer(CustomerEntity customerEntity);
 
-    CustomerEntity mapToCustomerEntity(Customer customer);
+  CustomerEntity mapToCustomerEntity(Customer customer);
 
-    CustomerResponse mapToCustomerResponse(Customer customer);
+  CustomerResponse mapToCustomerResponse(Customer customer);
 
-    void updateCustomerEntity(@MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
-
-
-
+  void updateCustomerEntity(
+      @MappingTarget CustomerEntity customerEntityTarget, CustomerEntity updateEntity);
 }

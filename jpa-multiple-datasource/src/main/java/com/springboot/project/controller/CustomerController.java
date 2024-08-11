@@ -11,11 +11,8 @@ import java.util.Optional;
 @RestController
 public class CustomerController implements CustomerApi {
 
-
-
-    @Override
-    public ResponseEntity<Customer> addCustomer(Optional<CustomerRequest> customerRequest) {
-        return null;
-    }
-
+  @Override
+  public ResponseEntity<Customer> addCustomer(Optional<CustomerRequest> customerRequest) {
+    return null;
+  }
 }

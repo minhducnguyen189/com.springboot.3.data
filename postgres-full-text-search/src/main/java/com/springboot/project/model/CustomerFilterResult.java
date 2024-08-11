@@ -9,8 +9,7 @@ import java.util.List;
 @Setter
 public class CustomerFilterResult {
 
-    List<Customer> filteredCustomers;
-    Long foundNumber;
-    Long total;
-
+  List<Customer> filteredCustomers;
+  Long foundNumber;
+  Long total;
 }

@@ -9,11 +9,9 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface AutoLoyaltyCardMapper {
 
-    AutoLoyaltyCardMapper MAPPER = Mappers.getMapper(AutoLoyaltyCardMapper.class);
+  AutoLoyaltyCardMapper MAPPER = Mappers.getMapper(AutoLoyaltyCardMapper.class);
 
-    LoyaltyCardEntity mapToLoyaltyCardEntity(LoyaltyCardRequest loyaltyCard);
+  LoyaltyCardEntity mapToLoyaltyCardEntity(LoyaltyCardRequest loyaltyCard);
 
-    LoyaltyCardResponse mapToLoyaltyCardResponse(LoyaltyCardEntity loyaltyCard);
-
-
+  LoyaltyCardResponse mapToLoyaltyCardResponse(LoyaltyCardEntity loyaltyCard);
 }

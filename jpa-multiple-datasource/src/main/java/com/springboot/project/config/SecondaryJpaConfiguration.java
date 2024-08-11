@@ -16,26 +16,23 @@ import java.util.Objects;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {},
-        entityManagerFactoryRef = "secondaryEntityManagerFactory",
-        transactionManagerRef = "primaryTransactionManager"
-)
+    basePackages = {},
+    entityManagerFactoryRef = "secondaryEntityManagerFactory",
+    transactionManagerRef = "primaryTransactionManager")
 public class SecondaryJpaConfiguration {
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
-            @Qualifier("secondaryDataSource") DataSource dataSource,
-            EntityManagerFactoryBuilder builder) {
-        return builder
-                .dataSource(dataSource)
-                .packages("")
-                .build();
-    }
+  @Bean
+  public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
+      @Qualifier("secondaryDataSource") DataSource dataSource,
+      EntityManagerFactoryBuilder builder) {
+    return builder.dataSource(dataSource).packages("").build();
+  }
 
-    @Bean
-    public PlatformTransactionManager primaryTransactionManager(
-            @Qualifier("secondaryEntityManagerFactory") LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory) {
-        return new JpaTransactionManager(Objects.requireNonNull(secondaryEntityManagerFactory.getObject()));
-    }
-
+  @Bean
+  public PlatformTransactionManager primaryTransactionManager(
+      @Qualifier("secondaryEntityManagerFactory")
+          LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory) {
+    return new JpaTransactionManager(
+        Objects.requireNonNull(secondaryEntityManagerFactory.getObject()));
+  }
 }

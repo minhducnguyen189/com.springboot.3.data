@@ -1,6 +1,5 @@
 package com.springboot.project.controller;
 
-
 import com.springboot.project.generated.api.CustomerApi;
 import com.springboot.project.generated.model.CustomerRequest;
 import com.springboot.project.generated.model.CustomerResponse;
@@ -17,19 +16,18 @@ import java.util.UUID;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerController implements CustomerApi {
 
-    private final CustomerService customerService;
+  private final CustomerService customerService;
 
-    @Override
-    public ResponseEntity<CustomerResponse> addCustomer(CustomerRequest customerRequest) {
-        CustomerResponse customerResponse = this.customerService.createCustomer(customerRequest);;
-        return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
-    }
+  @Override
+  public ResponseEntity<CustomerResponse> addCustomer(CustomerRequest customerRequest) {
+    CustomerResponse customerResponse = this.customerService.createCustomer(customerRequest);
+    ;
+    return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
+  }
 
-    @Override
-    public ResponseEntity<CustomerResponse> getCustomerInfo(UUID customerId) {
-        CustomerResponse customerResponse = this.customerService.getCustomer(customerId);
-        return new ResponseEntity<>(customerResponse, HttpStatus.OK);
-
-    }
-
+  @Override
+  public ResponseEntity<CustomerResponse> getCustomerInfo(UUID customerId) {
+    CustomerResponse customerResponse = this.customerService.getCustomer(customerId);
+    return new ResponseEntity<>(customerResponse, HttpStatus.OK);
+  }
 }

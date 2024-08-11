@@ -5,8 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class QueryFields {
 
-    public String DOB = "dob";
-    public String LOYALTY_CARD= "loyaltyCard";
-    public String POINTS = "points";
-
+  public String DOB = "dob";
+  public String LOYALTY_CARD = "loyaltyCard";
+  public String POINTS = "points";
 }
