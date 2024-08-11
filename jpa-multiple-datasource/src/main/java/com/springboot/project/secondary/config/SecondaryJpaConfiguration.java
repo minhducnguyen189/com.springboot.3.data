@@ -1,4 +1,4 @@
-package com.springboot.project.config;
+package com.springboot.project.secondary.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -16,20 +16,21 @@ import java.util.Objects;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-    basePackages = {},
+    basePackages = {"${application.multiple-datasource.secondary.base-package}"},
     entityManagerFactoryRef = "secondaryEntityManagerFactory",
-    transactionManagerRef = "primaryTransactionManager")
+    transactionManagerRef = "secondaryTransactionManager")
 public class SecondaryJpaConfiguration {
 
   @Bean
   public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
       @Qualifier("secondaryDataSource") DataSource dataSource,
+      SecondaryConfigProperty configProperty,
       EntityManagerFactoryBuilder builder) {
-    return builder.dataSource(dataSource).packages("").build();
+    return builder.dataSource(dataSource).packages(configProperty.getBasePackage()).build();
   }
 
   @Bean
-  public PlatformTransactionManager primaryTransactionManager(
+  public PlatformTransactionManager secondaryTransactionManager(
       @Qualifier("secondaryEntityManagerFactory")
           LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory) {
     return new JpaTransactionManager(

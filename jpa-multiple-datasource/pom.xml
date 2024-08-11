@@ -13,7 +13,6 @@
 
     <properties>
         <apache.common.lang3>3.15.0</apache.common.lang3>
-        <flyway.core>10.17.0</flyway.core>
         <hibernate.validator>8.0.1.Final</hibernate.validator>
         <jackson.databind.nullable>0.2.6</jackson.databind.nullable>
         <jakarta.validation.api>3.1.0-M1</jakarta.validation.api>
@@ -51,13 +50,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-postgresql</artifactId>
-            <version>${flyway.core}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- utilities -->
@@ -150,19 +142,20 @@
                 <version>${openapi.generator.plugin}</version>
                 <executions>
                     <execution>
+                        <id>primary resource openapi</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <!-- path to the openapi file spec `.yml` -->
                             <inputSpec>
-                                ${project.basedir}/src/main/resources/openapi/openapi.yaml
+                                ${project.basedir}/src/main/resources/openapi/primary-openapi.yaml
                             </inputSpec>
                             <generatorName>spring</generatorName>
                             <!-- generated package for api interface -->
-                            <apiPackage>com.springboot.project.generated.api</apiPackage>
+                            <apiPackage>com.springboot.project.generated.primary.api</apiPackage>
                             <!-- generated package for models -->
-                            <modelPackage>com.springboot.project.generated.model</modelPackage>
+                            <modelPackage>com.springboot.project.generated.primary.model</modelPackage>
                             <!-- using supportingFilesToGenerate -->
                             <supportingFilesToGenerate>
                                 ApiUtil.java
@@ -174,7 +167,47 @@
                                 <interfaceOnly>true</interfaceOnly>
                                 <useBeanValidation>true</useBeanValidation>
                                 <performBeanValidation>true</performBeanValidation>
-                                <useOptional>true</useOptional>
+                                <useOptional>false</useOptional>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <dateLibrary>custom</dateLibrary>
+                            </configOptions>
+                            <typeMappings>
+                                <typeMapping>DateTime=Instant</typeMapping>
+                                <typeMapping>Date=LocalDate</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>Instant=java.time.Instant</importMapping>
+                                <importMapping>Date=java.time.LocalDate</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>secondary resource openapi</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- path to the openapi file spec `.yml` -->
+                            <inputSpec>
+                                ${project.basedir}/src/main/resources/openapi/secondary-openapi.yaml
+                            </inputSpec>
+                            <generatorName>spring</generatorName>
+                            <!-- generated package for api interface -->
+                            <apiPackage>com.springboot.project.generated.secondary.api</apiPackage>
+                            <!-- generated package for models -->
+                            <modelPackage>com.springboot.project.generated.secondary.model</modelPackage>
+                            <!-- using supportingFilesToGenerate -->
+                            <supportingFilesToGenerate>
+                                ApiUtil.java
+                            </supportingFilesToGenerate>
+                            <configOptions>
+                                <useTags>true</useTags>
+                                <delegatePattern>false</delegatePattern>
+                                <dateLibrary>java8</dateLibrary>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useBeanValidation>true</useBeanValidation>
+                                <performBeanValidation>true</performBeanValidation>
+                                <useOptional>false</useOptional>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <dateLibrary>custom</dateLibrary>
                             </configOptions>

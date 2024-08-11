@@ -1,4 +1,4 @@
-package com.springboot.project.config;
+package com.springboot.project.secondary.config;
 
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;

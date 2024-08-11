@@ -1,6 +1,10 @@
-package com.springboot.project.entity.primary;
+package com.springboot.project.secondary.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +15,8 @@ import java.util.UUID;
 @Setter
 @Entity
 /** This entity is used for primary DB with the schema = "primary" */
-@Table(schema = "primary", name = "customer")
-public class CustomerEntity {
+@Table(schema = "public", name = "global_customer")
+public class GlobalCustomerEntity {
 
   @Id @GeneratedValue private UUID id;
 

@@ -15,31 +15,29 @@ externalDocs:
 servers:
   - url: "https://petstore3.swagger.io/api/v1"
 tags:
-  - name: "customer"
-    description: "Everything about your customer"
   - name: "global-customer"
     description: "Everything about your global customer"
 paths:
-  /v1/customers:
+  /secondary/customers:
     post:
       tags:
-        - "customer"
-      summary: "Add a customer to database"
+        - "global-customer"
+      summary: "Add a global customer to database"
       description: "Add a customer to database"
-      operationId: "addCustomer"
+      operationId: "addGlobalCustomer"
       requestBody:
-        description: "customer request dto"
+        description: "global customer request dto"
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CustomerRequest'
+              $ref: '#/components/schemas/GlobalCustomerRequest'
       responses:
         "201":
           description: "successful created operation"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Customer'
+                $ref: '#/components/schemas/GlobalCustomer'
         "400":
           description: "bad request operation"
         "404":
@@ -54,14 +52,14 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    Customer:
+    GlobalCustomer:
       allOf:
-        - $ref: '#/components/schemas/CustomerRequest'
+        - $ref: '#/components/schemas/GlobalCustomerRequest'
       properties:
         id:
           type: "string"
           format: "uuid"
-    CustomerRequest:
+    GlobalCustomerRequest:
       type: "object"
       properties:
         fullName:
@@ -76,17 +74,17 @@ components:
           type: "string"
           format: "date"
     ErrorResponse:
-      type: object
+      type: "object"
       properties:
         code:
-          type: integer
-          format: int32
+          type: "integer"
+          format: "int32"
         status:
-          type: string
+          type: "string"
         message:
-          type: string
+          type: "string"
         path:
-          type: string
+          type: "string"
         timestamp:
-          type: string
-          format: date-time
+          type: "string"
+          format: "date-time"
