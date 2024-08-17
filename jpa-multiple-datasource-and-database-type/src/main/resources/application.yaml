@@ -1,0 +1,33 @@
+application:
+  multiple-datasource:
+    general:
+      api-base-path: "/api"
+    primary:
+      hibernate-dialect: "org.hibernate.dialect.PostgreSQLDialect"
+      base-package: "com.springboot.project.primary"
+      show-sql: "true"
+      open-in-view: "true"
+      generate-ddl: "true"
+      hibernate.dll-auto: "create"
+    secondary:
+      hibernate-dialect: "org.hibernate.dialect.MariaDBDialect"
+      base-package: "com.springboot.project.secondary"
+      show-sql: "true"
+      open-in-view: "true"
+      generate-ddl: "true"
+      hibernate.dll-auto: "create"
+
+
+# Built in Spring Configuration
+spring:
+  datasource:
+    primary:
+      driver-class-name: "org.postgresql.Driver"
+      url: "jdbc:postgresql://localhost:5432/primary?useUnicode=true&characterEncoding=UTF-8"
+      username: "root"
+      password: "password"
+    secondary:
+      driver-class-name: "org.mariadb.jdbc.Driver"
+      url: "jdbc:mariadb://localhost:3306/secondary?useUnicode=true&characterEncoding=UTF-8"
+      username: "user"
+      password: "password"

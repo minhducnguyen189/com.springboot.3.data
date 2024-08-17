@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.springboot.project</groupId>
+        <artifactId>com.springboot.3.data</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jpa-multiple-datasource-and-database-type</artifactId>
+
+    <properties>
+        <apache.common.lang3>3.15.0</apache.common.lang3>
+        <hibernate.validator>8.0.1.Final</hibernate.validator>
+        <jackson.databind.nullable>0.2.6</jackson.databind.nullable>
+        <jakarta.validation.api>3.1.0-M1</jakarta.validation.api>
+        <lombok.mapstruct.binding>0.2.0</lombok.mapstruct.binding>
+        <lombok>1.18.34</lombok>
+        <mapstruct>1.5.5.Final</mapstruct>
+        <maven.compiler.plugin>3.13.0</maven.compiler.plugin>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <mariadb>3.4.1</mariadb>
+        <openapi.generator.plugin>7.7.0</openapi.generator.plugin>
+        <postgresql>42.7.3</postgresql>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <slf4j.api>2.0.13</slf4j.api>
+        <spring.boot.version>3.3.2</spring.boot.version>
+        <swagger.annotations>2.2.19</swagger.annotations>
+    </properties>
+
+
+    <dependencies>
+
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <!-- database -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>${mariadb}</version>
+        </dependency>
+
+
+        <!-- utilities -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${apache.common.lang3}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.api}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.api}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- model mapping -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct}</version>
+        </dependency>
+
+        <!-- openapi dependencies-->
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson.databind.nullable}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>${jakarta.validation.api}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger.annotations}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <executions>
+                    <execution>
+                        <id>build-info</id>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi.generator.plugin}</version>
+                <executions>
+                    <execution>
+                        <id>primary resource openapi</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- path to the openapi file spec `.yml` -->
+                            <inputSpec>
+                                ${project.basedir}/src/main/resources/openapi/primary-openapi.yaml
+                            </inputSpec>
+                            <generatorName>spring</generatorName>
+                            <!-- generated package for api interface -->
+                            <apiPackage>com.springboot.project.generated.primary.api</apiPackage>
+                            <!-- generated package for models -->
+                            <modelPackage>com.springboot.project.generated.primary.model</modelPackage>
+                            <!-- using supportingFilesToGenerate -->
+                            <supportingFilesToGenerate>
+                                ApiUtil.java
+                            </supportingFilesToGenerate>
+                            <configOptions>
+                                <useTags>true</useTags>
+                                <delegatePattern>false</delegatePattern>
+                                <dateLibrary>java8</dateLibrary>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useBeanValidation>true</useBeanValidation>
+                                <performBeanValidation>true</performBeanValidation>
+                                <useOptional>false</useOptional>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <dateLibrary>custom</dateLibrary>
+                            </configOptions>
+                            <typeMappings>
+                                <typeMapping>DateTime=Instant</typeMapping>
+                                <typeMapping>Date=LocalDate</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>Instant=java.time.Instant</importMapping>
+                                <importMapping>Date=java.time.LocalDate</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>secondary resource openapi</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- path to the openapi file spec `.yml` -->
+                            <inputSpec>
+                                ${project.basedir}/src/main/resources/openapi/secondary-openapi.yaml
+                            </inputSpec>
+                            <generatorName>spring</generatorName>
+                            <!-- generated package for api interface -->
+                            <apiPackage>com.springboot.project.generated.secondary.api</apiPackage>
+                            <!-- generated package for models -->
+                            <modelPackage>com.springboot.project.generated.secondary.model</modelPackage>
+                            <!-- using supportingFilesToGenerate -->
+                            <supportingFilesToGenerate>
+                                ApiUtil.java
+                            </supportingFilesToGenerate>
+                            <configOptions>
+                                <useTags>true</useTags>
+                                <delegatePattern>false</delegatePattern>
+                                <dateLibrary>java8</dateLibrary>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useBeanValidation>true</useBeanValidation>
+                                <performBeanValidation>true</performBeanValidation>
+                                <useOptional>false</useOptional>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <dateLibrary>custom</dateLibrary>
+                            </configOptions>
+                            <typeMappings>
+                                <typeMapping>DateTime=Instant</typeMapping>
+                                <typeMapping>Date=LocalDate</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>Instant=java.time.Instant</importMapping>
+                                <importMapping>Date=java.time.LocalDate</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok.mapstruct.binding}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
