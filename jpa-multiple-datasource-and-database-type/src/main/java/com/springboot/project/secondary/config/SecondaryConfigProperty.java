@@ -13,5 +13,11 @@ public class SecondaryConfigProperty {
 
   private String basePackage;
   private String hibernateDialect;
+  private boolean showSql;
+  private boolean generateDdl;
+  private String useSqlComments;
+  private String formatSql;
+  private String openInView;
+  private String hibernateHbm2dllAuto;
 
 }

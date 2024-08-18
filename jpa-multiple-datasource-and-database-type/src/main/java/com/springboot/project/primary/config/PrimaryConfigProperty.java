@@ -13,9 +13,11 @@ public class PrimaryConfigProperty {
 
   private String basePackage;
   private String hibernateDialect;
-  private String showSql;
+  private boolean showSql;
+  private boolean generateDdl;
+  private String useSqlComments;
+  private String formatSql;
   private String openInView;
-  private String generateDdl;
-  private String hibernateDllAuto;
+  private String hibernateHbm2dllAuto;
 
 }

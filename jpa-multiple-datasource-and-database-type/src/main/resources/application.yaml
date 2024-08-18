@@ -3,19 +3,23 @@ application:
     general:
       api-base-path: "/api"
     primary:
-      hibernate-dialect: "org.hibernate.dialect.PostgreSQLDialect"
       base-package: "com.springboot.project.primary"
+      hibernate-dialect: "org.hibernate.dialect.PostgreSQLDialect"
       show-sql: "true"
-      open-in-view: "true"
       generate-ddl: "true"
-      hibernate.dll-auto: "create"
+      use-sql-comments: "true"
+      format-sql: "true"
+      open-in-view: "true"
+      hibernate-hbm2dll-auto: "create"
     secondary:
       hibernate-dialect: "org.hibernate.dialect.MariaDBDialect"
       base-package: "com.springboot.project.secondary"
       show-sql: "true"
-      open-in-view: "true"
       generate-ddl: "true"
-      hibernate.dll-auto: "create"
+      use-sql-comments: "true"
+      format-sql: "true"
+      open-in-view: "true"
+      hibernate-hbm2dll-auto: "create"
 
 
 # Built in Spring Configuration
