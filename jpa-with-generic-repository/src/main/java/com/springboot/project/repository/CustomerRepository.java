@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Repository
 public interface CustomerRepository
@@ -30,11 +31,4 @@ public interface CustomerRepository
   Page<CustomerEntity> findAll(
       @Nonnull Specification<CustomerEntity> spec, @Nonnull Pageable pageable);
 
-    @Override
-    default Consumer<CustomerEntity> writeAction(ActionTypeEnum action) {
-        return switch (action) {
-            case CREATE, UPDATE -> this::save;
-            case DELETE -> this::delete;
-        };
-    }
 }

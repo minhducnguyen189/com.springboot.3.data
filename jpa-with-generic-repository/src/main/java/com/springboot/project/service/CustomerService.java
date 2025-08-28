@@ -34,23 +34,14 @@ import java.util.function.Consumer;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CustomerService {
 
-  private final CustomerRepository customerRepository;
-
   private final RepositoryFactory repositoryFactory;
-
-  private final EntityManager entityManager;
 
   public CustomerResponse createCustomer(CustomerRequest customer) {
     CustomerEntity customerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
-    customerEntity = this.customerRepository.save(customerEntity);
-    return AutoCustomerMapper.MAPPER.mapToCustomerResponse(customerEntity);
-  }
-
-  public CustomerResponse createCustomerByFactoryRepository(CustomerRequest customer) {
-    CustomerEntity customerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
-    ((CustomerRepository) this.repositoryFactory.getRepository(RepositoryTypeEnum.CUSTOMER))
-        .writeAction(ActionTypeEnum.CREATE)
-        .accept(customerEntity);
+    customerEntity =
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+            .save(customerEntity);
     return AutoCustomerMapper.MAPPER.mapToCustomerResponse(customerEntity);
   }
 
@@ -59,7 +50,10 @@ public class CustomerService {
     LoyaltyCardEntity loyaltyCardEntity =
         AutoLoyaltyCardMapper.MAPPER.mapToLoyaltyCardEntity(loyaltyCard);
     customerEntity.setLoyaltyCard(loyaltyCardEntity);
-    customerEntity = this.customerRepository.save(customerEntity);
+    customerEntity =
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+            .save(customerEntity);
     return AutoLoyaltyCardMapper.MAPPER.mapToLoyaltyCardResponse(customerEntity.getLoyaltyCard());
   }
 
@@ -110,34 +104,52 @@ public class CustomerService {
                     customerFilter.getLoyaltyCardPoints()));
 
     Page<CustomerEntity> customerEntityPage =
-        this.customerRepository.findAll(specification, pageable);
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+            .findAll(specification, pageable);
     CustomerFilterResponse customerFilterResult = new CustomerFilterResponse();
     customerFilterResult.setCustomers(
         AutoCustomerMapper.MAPPER.mapToCustomers(customerEntityPage.getContent()));
-    customerFilterResult.setFoundNumber(this.customerRepository.count(specification));
-    customerFilterResult.setTotalNumber(this.customerRepository.count());
+    customerFilterResult.setFoundNumber(
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+            .count(specification));
+    customerFilterResult.setTotalNumber(
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+            .count());
 
     return customerFilterResult;
   }
 
   public void updateCustomer(UUID customerId, CustomerRequest customer) {
-    Optional<CustomerEntity> customerEntity = this.customerRepository.findById(customerId);
+    Optional<CustomerEntity> customerEntity =
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+            .findById(customerId);
     if (customerEntity.isPresent()) {
       CustomerEntity existedCustomerEntity = customerEntity.get();
       CustomerEntity updateCustomerEntity = AutoCustomerMapper.MAPPER.mapToCustomerEntity(customer);
       AutoCustomerMapper.MAPPER.updateCustomerEntity(existedCustomerEntity, updateCustomerEntity);
-      this.customerRepository.save(existedCustomerEntity);
+      this.repositoryFactory
+          .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+          .save(existedCustomerEntity);
       return;
     }
     throw new RuntimeException("Customer Not Found!");
   }
 
   public void deleteCustomer(UUID customerId) {
-    this.customerRepository.deleteById(customerId);
+    this.repositoryFactory
+        .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+        .deleteById(customerId);
   }
 
   private CustomerEntity getCustomerEntity(UUID customerId) {
-    Optional<CustomerEntity> customerEntity = this.customerRepository.findById(customerId);
+    Optional<CustomerEntity> customerEntity =
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+            .findById(customerId);
     if (customerEntity.isPresent()) {
       return customerEntity.get();
     }

@@ -1,8 +1,22 @@
 package com.springboot.project.model;
 
+import com.springboot.project.repository.CustomerRepository;
+import com.springboot.project.repository.GenericRepository;
+import com.springboot.project.repository.ItemRepository;
+
 public enum RepositoryTypeEnum {
 
-    ITEM,
-    CUSTOMER;
+    ITEM(ItemRepository.class),
+    CUSTOMER(CustomerRepository.class);
+
+    private final Class<? extends GenericRepository<?>> repoClass;
+
+    RepositoryTypeEnum(Class<? extends GenericRepository<?>> repoClass) {
+        this.repoClass = repoClass;
+    }
+
+    public Class<? extends GenericRepository<?>> getRepoClass() {
+        return repoClass;
+    }
 
 }
