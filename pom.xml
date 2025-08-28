@@ -15,6 +15,7 @@
         <module>postgres-full-text-search</module>
         <module>postgres-native-query-optional-params</module>
         <module>jpa-with-specification-query</module>
+        <module>jpa-with-generic-repository</module>
         <module>hibernate-second-level-cache-ehcache</module>
         <module>jpa-with-postgres-view-table</module>
         <module>jpa-multiple-datasource</module>

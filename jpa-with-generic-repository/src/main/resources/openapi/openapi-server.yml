@@ -1,0 +1,420 @@
+openapi: 3.0.3
+info:
+  title: Swagger Customer - OpenAPI 3.0
+  description: Everything about sample hibernate second level cache
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://petstore3.swagger.io/api/v1
+tags:
+  - name: customer
+    description: Everything about your Customer
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: order
+    description: Everything about your Order
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /v1/customers:
+    post:
+      tags:
+        - customer
+      summary: Add a Customer to database
+      description: Add a Customer to database
+      operationId: addCustomer
+      requestBody:
+        description: Create a Customer to database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '405':
+          description: Invalid input
+  /v1/customers/{customerId}/info:
+    get:
+      tags:
+        - customer
+      summary: get an existing customer info
+      description: get an existing customer info by Id
+      operationId: getCustomerInfo
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - customer
+      summary: Update an existing customer
+      description: Update an existing customer by Id
+      operationId: updateCustomers
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Update an existent customer in the database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerResponse'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+  /v1/customers/{customerId}/orders:
+    post:
+      tags:
+        - order
+      summary: Add an order to database
+      description: Add an order to database
+      operationId: addOrder
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Create an Order to database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '405':
+          description: Invalid input
+  /v1/customers/{customerId}/orders/{orderId}:
+    get:
+      tags:
+        - order
+      summary: Get an order from database
+      description: Get an order from database
+      operationId: getOrderDetail
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '405':
+          description: Invalid input
+  /v1/customers/{customerId}/loyaltyCard:
+    post:
+      tags:
+        - customer
+      summary: Add a loyaltyCard to database
+      description: Add a loyaltyCard to database
+      operationId: addloyaltyCard
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Create a loyaltyCard to database
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyCardRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyCardResponse'
+        '405':
+          description: Invalid input
+  /v1/customers/actions/filter:
+    get:
+      tags:
+        - customer
+      summary: filter existing customers
+      description: filter existing customers info by keyword
+      operationId: filterCustomers
+      parameters:
+        - name: fullName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: address
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: phone
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: gender
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - M
+              - F
+        - name: dobFrom
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: dobTo
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: loyaltyCardPoints
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: pageNumber
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: sortBy
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sortOrder
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerFilterResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+components:
+  schemas:
+    CustomerResponse:
+      allOf:
+        - $ref: '#/components/schemas/CustomerRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+    OrderResponse:
+      allOf:
+        - $ref: '#/components/schemas/OrderRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+
+    ItemResponse:
+      allOf:
+        - $ref: '#/components/schemas/ItemRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+
+
+
+    CustomerRequest:
+      type: object
+      required:
+        - email
+        - phone
+      properties:
+        fullName:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        gender:
+          type: string
+          enum:
+            - M
+            - F
+        dob:
+          type: string
+          format: date
+
+    OrderRequest:
+      type: object
+      required:
+        - orderName
+        - orderStatus
+      properties:
+        orderName:
+          type: string
+        orderStatus:
+          type: string
+          enum:
+            - CREATED
+            - SHIPPING
+            - FINISHED
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemRequest'
+
+    ItemRequest:
+      type: object
+      required:
+        - itemName
+        - quantity
+        - price
+      properties:
+        itemName:
+          type: string
+        quantity:
+          type: integer
+          format: int64
+        price:
+          type: number
+          format: double
+
+    LoyaltyCardResponse:
+      allOf:
+        - $ref: '#/components/schemas/LoyaltyCardRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            issueDate:
+              type: string
+              format: date
+
+    LoyaltyCardRequest:
+      type: object
+      properties:
+        points:
+          type: integer
+
+    CustomerFilterResponse:
+      type: object
+      properties:
+        customers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerFilterDetailResponse'
+        foundNumber:
+          type: integer
+          format: int64
+        totalNumber:
+          type: integer
+          format: int64
+
+    CustomerFilterDetailResponse:
+      allOf:
+        - $ref: '#/components/schemas/CustomerResponse'
+        - type: object
+          properties:
+            loyaltyCard:
+              $ref: '#/components/schemas/LoyaltyCardResponse'
+            orders:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderResponse'
