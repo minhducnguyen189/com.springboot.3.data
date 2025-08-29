@@ -3,17 +3,14 @@ package com.springboot.project.service;
 import com.springboot.project.entity.CustomerEntity;
 import com.springboot.project.entity.LoyaltyCardEntity;
 import com.springboot.project.generated.model.*;
-import com.springboot.project.helper.RepositoryFactory;
+import com.springboot.project.repository.RepositoryFactory;
 import com.springboot.project.helper.SpecificationHelper;
 import com.springboot.project.mapper.AutoCustomerMapper;
 import com.springboot.project.mapper.AutoLoyaltyCardMapper;
-import com.springboot.project.model.ActionTypeEnum;
 import com.springboot.project.model.CustomerFilter;
 import com.springboot.project.model.RepositoryTypeEnum;
 import com.springboot.project.repository.CustomerRepository;
-import com.springboot.project.repository.GenericRepository;
 import com.springboot.project.share.QueryFields;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -28,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))

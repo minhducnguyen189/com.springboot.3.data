@@ -1,7 +1,6 @@
 package com.springboot.project.repository;
 
 import com.springboot.project.entity.CustomerEntity;
-import com.springboot.project.model.ActionTypeEnum;
 import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +11,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 @Repository
 public interface CustomerRepository

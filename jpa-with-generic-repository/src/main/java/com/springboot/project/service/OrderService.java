@@ -6,8 +6,10 @@ import com.springboot.project.entity.OrderEntity;
 import com.springboot.project.generated.model.ItemRequest;
 import com.springboot.project.generated.model.OrderRequest;
 import com.springboot.project.generated.model.OrderResponse;
+import com.springboot.project.repository.RepositoryFactory;
 import com.springboot.project.mapper.AutoItemMapper;
 import com.springboot.project.mapper.AutoOrderMapper;
+import com.springboot.project.model.RepositoryTypeEnum;
 import com.springboot.project.repository.CustomerRepository;
 import com.springboot.project.repository.OrderRepository;
 import lombok.AllArgsConstructor;
@@ -24,8 +26,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderService {
 
-  private final CustomerRepository customerRepository;
-  private final OrderRepository orderRepository;
+  private final RepositoryFactory repositoryFactory;
 
   public OrderResponse createOrder(UUID customerId, OrderRequest order) {
     if (CollectionUtils.isEmpty(order.getItems())) {
@@ -36,12 +37,18 @@ public class OrderService {
     List<ItemEntity> itemEntities = this.mapToItemEntities(order.getItems(), orderEntity);
     orderEntity.setCustomer(customerEntity);
     orderEntity.setItems(itemEntities);
-    orderEntity = this.orderRepository.save(orderEntity);
+    orderEntity =
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.ORDER, OrderRepository.class)
+            .save(orderEntity);
     return AutoOrderMapper.MAPPER.mapToOrderResponse(orderEntity);
   }
 
   public OrderResponse getOrderDetail(UUID customerId, UUID orderId) {
-    Optional<OrderEntity> orderEntityOpt = this.orderRepository.findById(orderId);
+    Optional<OrderEntity> orderEntityOpt =
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.ORDER, OrderRepository.class)
+            .findById(orderId);
     if (orderEntityOpt.isPresent()) {
       OrderEntity orderEntity = orderEntityOpt.get();
       if (orderEntity.getCustomer().getId().equals(customerId)) {
@@ -52,7 +59,10 @@ public class OrderService {
   }
 
   private CustomerEntity getCustomer(UUID customerId) {
-    Optional<CustomerEntity> customerEntity = this.customerRepository.findById(customerId);
+    Optional<CustomerEntity> customerEntity =
+        this.repositoryFactory
+            .getRepository(RepositoryTypeEnum.CUSTOMER, CustomerRepository.class)
+            .findById(customerId);
     if (customerEntity.isPresent()) {
       return customerEntity.get();
     }
